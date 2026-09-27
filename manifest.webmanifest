@@ -1,0 +1,37 @@
+{
+  "name": "Mon Cahier — French A1–A2",
+  "short_name": "Mon Cahier",
+  "description": "A quiet notebook for learning French at A1–A2: spaced-repetition flashcards, grammar lessons with exercises, dictation practice and a progress dashboard. Bring your own words from Google Sheets. Everything stays in your browser.",
+  "start_url": ".",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

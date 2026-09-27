@@ -1,0 +1,1851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mon Cahier — learn French A1–A2</title>
+<meta name="description" content="A quiet notebook for learning French at A1–A2: spaced-repetition flashcards, grammar lessons with exercises, dictation practice and a progress dashboard. Bring your own words from Google Sheets. Everything stays in your browser.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mon Cahier — learn French A1–A2">
+<meta property="og:description" content="A quiet notebook for learning French at A1–A2: spaced-repetition flashcards, grammar lessons with exercises, dictation practice and a progress dashboard. Bring your own words from Google Sheets. Everything stays in your browser.">
+<meta property="og:image" content="icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mon Cahier">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F7F7F4; --surface-3:#FAFAF8;
+  --ink:#1A1A1C; --ink-2:#3F4046; --muted:#6C6D75;
+  --line:#E2E2DC; --line-2:#EFEFEA;
+  --accent:#2C5FA8; --accent-strong:#22497F; --on-accent:#FFFFFF; --accent-wash:#EDF2FA;
+  --good:#1F6B3A; --good-wash:#EAF4ED; --bad:#A83232; --bad-wash:#FAECEC;
+  --warn-wash:#FBF2DC; --warn-ink:#6A4B0E;
+  --s1:#2C5FA8; --s2:#C96A28; --s3:#2F8F6B;
+  --h0:#EDEDE8; --h1:#CBDCF1; --h2:#8FB4DF; --h3:#4F80C0; --h4:#22497F;
+  --m-new:#E4E4DE; --m-learn:#9DBEE4; --m-mature:#2C5FA8;
+  --shadow:0 1px 2px rgba(26,26,28,.05), 0 12px 28px -22px rgba(26,26,28,.5);
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype","Book Antiqua",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font:var(--serif);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; padding-inline:16px; padding-block:0 96px;
+  background:var(--paper);
+  color:var(--ink); font-family:var(--serif); font-size:16px; line-height:1.6;
+  min-height:100%;
+}
+button,input,select,textarea{font:inherit; color:inherit}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance; line-height:1.25; font-weight:700; letter-spacing:-.005em}
+.ico{flex:none; vertical-align:middle}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px}
+b,strong{font-weight:700}
+
+/* ---------- header & nav ---------- */
+.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; margin-inline:-16px; padding:12px 16px; background:var(--paper); border-bottom:1px solid var(--line)}
+.top-in{max-width:1000px; margin-inline:auto; display:flex; align-items:center; gap:12px}
+.brand{font-family:var(--serif); font-size:23px; font-style:italic; font-weight:400; letter-spacing:-.01em; color:var(--ink); white-space:nowrap; line-height:1.3}
+.brand small{font-family:var(--sans); font-style:normal; font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-left:9px}
+.spacer{flex:1}
+.streak{display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border:1px solid var(--line); border-radius:999px; background:var(--surface); font-family:var(--sans); font-weight:600; font-size:13px; font-variant-numeric:tabular-nums}
+.streak .ico{color:var(--s2)}
+.streak.off .ico{color:var(--muted)}
+.iconbtn{display:inline-grid; place-items:center; width:34px; height:34px; border-radius:6px; border:1px solid transparent; background:transparent; cursor:pointer; color:var(--ink-2)}
+.iconbtn:hover{background:var(--surface-2); border-color:var(--line); color:var(--ink)}
+.iconbtn.sm{width:28px; height:28px}
+.nav{position:fixed; left:0; right:0; bottom:0; z-index:30; display:grid; grid-template-columns:repeat(5,1fr); background:var(--surface); border-top:1px solid var(--line); padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.nav button{display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 2px; border:0; background:none; cursor:pointer; color:var(--muted); font-family:var(--sans); font-size:11px; font-weight:600; border-radius:6px}
+.nav button[aria-current="page"]{color:var(--accent-strong); background:var(--accent-wash)}
+@media (min-width:860px){
+  body{padding-block:0 48px}
+  .nav{position:static; display:flex; gap:2px; border:0; background:none; padding:0; margin-left:16px; z-index:auto}
+  .nav button{flex-direction:row; gap:7px; font-size:14px; padding:7px 12px}
+  .top-in{gap:8px}
+}
+
+main{max-width:1000px; margin-inline:auto; padding-block:26px 8px; display:grid; gap:20px}
+
+/* ---------- primitives ---------- */
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:20px}
+.panel.flush{padding:0; overflow:hidden}
+.ph{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px}
+.ph h2{font-size:18px}
+.eyebrow{font-family:var(--sans); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.script{font-style:italic; font-weight:400}
+.row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr)); gap:20px}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:9px 16px; border-radius:5px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-family:var(--sans); font-size:14px; font-weight:600; cursor:pointer; line-height:1.2; text-align:center}
+.btn:hover{border-color:var(--accent); color:var(--accent-strong)}
+.btn.primary{background:var(--accent-strong); border-color:var(--accent-strong); color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.btn.big{padding:12px 22px; font-size:16px}
+.btn.sm{padding:6px 11px; font-size:13px}
+.btn.ghost{background:transparent}
+.btn[disabled]{opacity:.45; cursor:not-allowed}
+.chip{display:inline-flex; align-items:center; gap:5px; padding:2px 9px; border-radius:999px; font-family:var(--sans); font-size:12px; font-weight:600; background:var(--surface-2); border:1px solid var(--line); color:var(--ink-2); white-space:nowrap}
+.chip.a1{background:var(--accent-wash); border-color:transparent; color:var(--accent-strong)}
+.chip.a2{background:var(--warn-wash); border-color:transparent; color:var(--warn-ink)}
+.chip.ok{background:var(--good-wash); border-color:transparent; color:var(--good)}
+.chip.bad{background:var(--bad-wash); border-color:transparent; color:var(--bad)}
+kbd{font:600 11px var(--sans); padding:1px 6px; border:1px solid var(--line); border-bottom-width:2px; border-radius:3px; background:var(--surface-2); color:var(--ink-2)}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:5px; overflow:hidden; background:var(--surface)}
+.seg button{border:0; background:none; padding:7px 12px; font-family:var(--sans); font-size:13px; font-weight:600; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent-wash); color:var(--accent-strong)}
+input[type=text],input[type=search],select,textarea{width:100%; padding:10px 12px; border-radius:5px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-size:15px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent); outline-offset:1px}
+textarea{resize:vertical; min-height:96px; font-family:var(--sans); font-size:14px; line-height:1.5}
+select{width:auto; font-family:var(--sans); font-size:14px}
+input[type=file]{width:100%; padding:8px 0; font-family:var(--sans); font-size:14px}
+input[type=file]::file-selector-button{font:600 13px var(--sans); padding:7px 12px; margin-right:10px; border:1px solid var(--line); border-radius:5px; background:var(--surface-2); color:var(--ink); cursor:pointer}
+input[type=file]::file-selector-button:hover{border-color:var(--accent); color:var(--accent-strong)}
+.field{display:grid; gap:6px}
+.field label{font-family:var(--sans); font-size:13px; font-weight:600; color:var(--ink-2)}
+hr{border:0; border-top:1px solid var(--line); margin:16px 0}
+
+/* ---------- today ---------- */
+.hero{display:grid; grid-template-columns:1fr auto; gap:22px; align-items:center}
+.hero h1{font-style:italic; font-weight:400; font-size:clamp(32px,6vw,46px); letter-spacing:-.02em; line-height:1.2}
+.hero .date{display:block; color:var(--ink-2); margin-top:6px; font-style:italic}
+.hero .date::first-letter{text-transform:uppercase}
+.ring{position:relative; width:112px; height:112px}
+.ring svg{display:block}
+.ring .n{position:absolute; inset:0; display:grid; place-items:center; text-align:center; line-height:1.15}
+.ring b{display:block; font-family:var(--sans); font-size:26px; font-variant-numeric:tabular-nums; line-height:1}
+.ring span{display:block; font-family:var(--sans); font-size:11px; color:var(--muted); margin-top:3px}
+@media (max-width:520px){ .hero{grid-template-columns:1fr} .ring{justify-self:start} }
+.todo{display:grid; gap:10px}
+.todo-item{display:flex; align-items:center; gap:14px; padding:13px 15px; border:1px solid var(--line); border-radius:5px; background:var(--surface-3)}
+.todo-item .t{flex:1; min-width:0}
+.todo-item .t b{display:block}
+.week{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
+.week div{display:grid; justify-items:center; gap:6px; font-family:var(--sans); font-size:11px; color:var(--muted); font-weight:600}
+.dot{width:26px; height:26px; border-radius:50%; border:2px solid var(--line); background:var(--surface)}
+.dot.half{background:var(--h1); border-color:var(--h2)}
+.dot.full{background:var(--accent); border-color:var(--accent)}
+.dot.today{outline:2px solid var(--ink); outline-offset:2px}
+.quote{display:grid; gap:6px}
+.quote .fr{font-size:20px; font-weight:600; line-height:1.45}
+
+/* ---------- vocab ---------- */
+.imp-cta{display:flex; gap:18px; align-items:center; justify-content:space-between; flex-wrap:wrap; border:1px dashed var(--accent); background:var(--accent-wash)}
+.imp-cta h2{font-size:19px; margin-top:3px}
+.imp-cta p{max-width:62ch; margin-top:6px; color:var(--ink-2); font-size:15px}
+.themes{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr)); gap:12px}
+.theme{display:grid; gap:10px; text-align:left; padding:15px; border:1px solid var(--line); border-radius:5px; background:var(--surface); cursor:pointer; font-family:inherit; font-size:inherit; color:inherit}
+.theme:hover{border-color:var(--accent)}
+.theme b{font-size:16px}
+.theme .fr{font-size:14px; color:var(--muted); font-style:italic}
+.theme .small{font-family:var(--sans); font-size:12px}
+.mbar{display:flex; height:8px; gap:2px; border-radius:4px; overflow:hidden; background:var(--surface)}
+.mbar i{display:block; height:100%}
+.mbar .n{background:var(--m-new)} .mbar .l{background:var(--m-learn)} .mbar .m{background:var(--m-mature)}
+.wl{display:grid}
+.wl-row{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1.3fr) auto; gap:12px; align-items:center; padding:12px 18px; border-top:1px solid var(--line-2)}
+.wl-row:first-child{border-top:0}
+.wl-row .fr{font-weight:700; font-size:17px}
+.wl-row .ex{grid-column:1/-1; font-size:14px; color:var(--muted); margin-top:-6px; font-style:italic}
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-family:var(--sans); font-size:12px; color:var(--ink-2)}
+.legend i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px}
+
+/* flashcard */
+.sess{max-width:660px; margin-inline:auto; width:100%; display:grid; gap:14px}
+.sess-top{display:flex; align-items:center; gap:12px}
+.prog{flex:1; height:5px; border-radius:3px; background:var(--h0); overflow:hidden}
+.prog i{display:block; height:100%; background:var(--accent); border-radius:3px; transition:width .25s}
+.fc{position:relative; background:var(--surface); border:1px solid var(--line); border-radius:6px; box-shadow:var(--shadow); padding:56px 28px 28px; min-height:300px; display:grid; align-content:start; gap:15px}
+.fc-tags{position:absolute; top:12px; left:16px; right:16px; display:flex; gap:8px; align-items:center}
+.fc-prompt{font-family:var(--sans); font-size:13px; color:var(--muted); font-weight:600}
+.fc-word{font-size:clamp(32px,7vw,46px); font-weight:700; letter-spacing:-.02em; line-height:1.15; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.fc-vi{font-size:clamp(22px,5vw,30px); font-weight:600; color:var(--accent-strong); line-height:1.3}
+.fc-note{font-size:14px; color:var(--muted)}
+.fc-ex{padding-top:14px; margin-top:4px; border-top:1px solid var(--line); display:grid; gap:3px}
+.fc-ex .f{font-weight:600; display:flex; gap:8px; align-items:center}
+.grades{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
+.grade{display:grid; gap:2px; justify-items:center; padding:10px 6px; border-radius:5px; border:1px solid var(--line); background:var(--surface); cursor:pointer; font-family:var(--sans); font-size:14px; font-weight:700; line-height:1.25}
+.grade small{font-size:11px; font-weight:500; color:var(--muted)}
+.grade .k{font-size:11px; color:var(--muted); font-weight:600}
+.grade:hover{border-color:var(--accent)}
+.grade.rec{background:var(--accent-wash); border-color:var(--accent)}
+.grade.q1{border-bottom:3px solid var(--bad)} .grade.q2{border-bottom:3px solid #C08A1E} .grade.q3{border-bottom:3px solid var(--accent)} .grade.q4{border-bottom:3px solid var(--good)}
+.chars{display:flex; gap:4px; flex-wrap:wrap}
+.chars button{min-width:34px; height:34px; border:1px solid var(--line); background:var(--surface-2); border-radius:4px; cursor:pointer; font-family:var(--serif); font-size:15px; font-weight:600}
+.chars button:hover{border-color:var(--accent)}
+.verdict{display:flex; gap:10px; align-items:flex-start; padding:11px 13px; border-radius:5px; font-weight:600}
+.verdict.ok{background:var(--good-wash); color:var(--good)}
+.verdict.near{background:var(--warn-wash); color:var(--warn-ink)}
+.verdict.bad{background:var(--bad-wash); color:var(--bad)}
+.answer-line{font-size:23px; font-weight:700}
+.sum{display:grid; gap:14px; text-align:center; justify-items:center; padding:36px 20px}
+.sum .big{font-family:var(--sans); font-size:52px; font-weight:800; line-height:1; letter-spacing:-.03em}
+
+/* ---------- grammar ---------- */
+.lgroup{display:grid; gap:10px}
+.lesson-card{display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; width:100%; text-align:left; padding:15px 17px; border:1px solid var(--line); border-radius:5px; background:var(--surface); cursor:pointer; font-family:inherit; font-size:inherit; color:inherit}
+.lesson-card:hover{border-color:var(--accent)}
+.lesson-card b{font-size:16px}
+.lesson-card .s{font-size:14px; color:var(--muted)}
+.score{min-width:58px; text-align:right; font-family:var(--sans); font-weight:700; font-variant-numeric:tabular-nums}
+.lesson{max-width:740px; margin-inline:auto; width:100%; display:grid; gap:18px}
+.lesson h1{font-size:30px; letter-spacing:-.015em}
+.block{display:grid; gap:11px}
+.block h3{font-size:18px}
+.block p{max-width:68ch}
+.tbl{overflow-x:auto; border:1px solid var(--line); border-radius:5px; background:var(--surface)}
+.tbl table{border-collapse:collapse; width:100%; font-size:15px}
+.tbl th,.tbl td{padding:9px 13px; text-align:left; border-bottom:1px solid var(--line-2); white-space:nowrap}
+.tbl th{font-family:var(--sans); font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; background:var(--surface-2)}
+.tbl tr:last-child td{border-bottom:0}
+.ex-list{display:grid; gap:0; border-left:3px solid var(--accent); background:var(--surface); border-radius:0 5px 5px 0; border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
+.ex-item{display:flex; align-items:center; gap:10px; padding:10px 13px; border-top:1px solid var(--line-2)}
+.ex-item:first-child{border-top:0}
+.ex-item .t{flex:1; min-width:0}
+.ex-item .f{font-weight:600}
+.ex-item .v{font-size:14px; color:var(--muted); font-style:italic}
+.hl{background:var(--accent-wash); color:var(--accent-strong); padding:0 4px; border-radius:2px; font-weight:700}
+.tip{padding:11px 15px; border-radius:5px; background:var(--warn-wash); color:var(--warn-ink); font-size:15px}
+.q{display:grid; gap:15px}
+.q-text{font-size:21px; font-weight:600; line-height:1.45}
+.blank{display:inline-block; min-width:54px; border-bottom:2px solid var(--ink); text-align:center; color:var(--accent-strong)}
+.opts{display:grid; gap:8px}
+.opt{display:flex; gap:12px; align-items:center; text-align:left; padding:12px 15px; border:1px solid var(--line); border-radius:5px; background:var(--surface); cursor:pointer; font-family:inherit; font-size:16px; font-weight:600; color:inherit}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt .k{width:22px; height:22px; border-radius:50%; border:1px solid var(--line); display:grid; place-items:center; font-family:var(--sans); font-size:12px; color:var(--muted); flex:none}
+.opt.right{background:var(--good-wash); border-color:var(--good); color:var(--good)}
+.opt.wrong{background:var(--bad-wash); border-color:var(--bad); color:var(--bad)}
+.opt[disabled]{cursor:default}
+.fillrow{display:flex; gap:8px}
+
+/* ---------- dictation ---------- */
+.dict-play{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+.play{width:72px; height:72px; border-radius:50%; border:0; background:var(--accent-strong); color:var(--on-accent); display:grid; place-items:center; cursor:pointer}
+.play:hover{background:var(--accent)}
+.diff{display:flex; flex-wrap:wrap; gap:4px 8px; font-size:22px; font-weight:600; line-height:1.5}
+.diff .ok{color:var(--good)}
+.diff .accent{color:var(--warn-ink); background:var(--warn-wash); border-radius:2px; padding:0 3px}
+.diff .miss{color:var(--bad); background:var(--bad-wash); border-radius:2px; padding:0 3px; text-decoration:underline wavy}
+.extras{font-size:15px; color:var(--bad)}
+.extras s{opacity:.85}
+
+/* ---------- dashboard ---------- */
+.figs{display:grid; grid-template-columns:repeat(4,1fr)}
+.fig{padding:4px 20px; border-left:1px solid var(--line)}
+.fig:first-child{border-left:0; padding-left:0}
+.fig b{display:block; font-family:var(--sans); font-size:34px; line-height:1.1; font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.fig b small{font-size:15px; font-weight:600; color:var(--muted); letter-spacing:0}
+.fig span{display:block; font-size:14px; color:var(--muted); margin-top:3px}
+@media (max-width:640px){
+  .figs{grid-template-columns:1fr 1fr; gap:18px 0}
+  .fig:nth-child(3){border-left:0; padding-left:0}
+}
+.chart svg{display:block; max-width:100%; height:auto; overflow:visible}
+.chart text{font-family:var(--sans); fill:var(--muted); font-size:12px}
+.chart .grid{stroke:var(--line-2); stroke-width:1}
+.chart .base{stroke:var(--line); stroke-width:1}
+.chart .goal{stroke:var(--ink-2); stroke-width:1.5; stroke-dasharray:5 4}
+.bar-hit{fill:transparent}
+.bar-hit:hover{fill:var(--ink); fill-opacity:.06}
+.heat{display:grid; grid-template-columns:30px repeat(12,minmax(0,1fr)); gap:3px; max-width:560px}
+.heat .lab{font-family:var(--sans); font-size:11px; color:var(--muted); align-self:center; justify-self:start; line-height:1}
+.hc{aspect-ratio:1; border-radius:2px; background:var(--h0)}
+.hc.f{background:transparent}
+.hc.l1{background:var(--h1)} .hc.l2{background:var(--h2)} .hc.l3{background:var(--h3)} .hc.l4{background:var(--h4)}
+.hc.now{outline:2px solid var(--ink); outline-offset:1px}
+.mrow{display:grid; grid-template-areas:'nm bar pc'; grid-template-columns:minmax(120px,1.1fr) minmax(0,2.4fr) 66px; gap:14px; align-items:center; padding:10px 0; border-top:1px solid var(--line-2)}
+.mrow:first-of-type{border-top:0}
+.mrow .nm{font-size:15px; font-weight:600}
+.mrow .nm small{display:block; font-family:var(--sans); font-weight:400; color:var(--muted); font-size:12px}
+.mrow .nm{grid-area:nm} .mrow .mbar{grid-area:bar} .mrow .pc{grid-area:pc}
+@media (max-width:560px){.mrow{grid-template-columns:1fr auto; grid-template-areas:'nm pc' 'bar bar'; gap:8px 12px}}
+.mrow .pc{text-align:right; font-family:var(--sans); font-weight:700; font-variant-numeric:tabular-nums}
+.mrow .mbar{height:12px}
+.grow{display:grid; grid-template-columns:minmax(0,1fr) minmax(70px,1.2fr) 46px; gap:12px; align-items:center; padding:9px 0; border-top:1px solid var(--line-2); font-size:15px}
+.grow:first-of-type{border-top:0}
+.gbar{height:8px; border-radius:4px; background:var(--h0); overflow:hidden}
+.gbar i{display:block; height:100%; background:var(--accent); border-radius:4px}
+.grow b{font-family:var(--sans)}
+.demo-banner{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; padding:13px 17px; border:1px dashed var(--accent); background:var(--accent-wash); border-radius:5px; font-size:15px}
+details.tv{margin-top:14px; font-size:14px}
+details.tv summary{cursor:pointer; color:var(--ink-2); font-weight:600}
+details.tv .tbl{margin-top:8px; max-height:260px; overflow:auto}
+#tip{white-space:pre-line; position:fixed; top:0; left:0; z-index:60; pointer-events:none; background:var(--ink); color:#fff; padding:7px 10px; border-radius:4px; font-family:var(--sans); font-size:12px; line-height:1.45; max-width:220px; opacity:0; transition:opacity .08s}
+#tip.on{opacity:1}
+
+/* ---------- import & AI ---------- */
+.imp-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr)); gap:14px}
+.qp{display:grid; gap:7px; padding:13px 15px; border:1px solid var(--line); border-radius:5px; background:var(--surface); cursor:pointer}
+.qp:hover{border-color:var(--accent)}
+.opts-prev{display:flex; gap:14px; flex-wrap:wrap; font-size:15px; padding-left:28px}
+.opts-prev .ok{color:var(--good); font-weight:700}
+.qp .small{padding-left:28px}
+.qp .muted{font-size:14px}
+
+/* ---------- modal & toast ---------- */
+.veil{position:fixed; inset:0; z-index:50; background:rgba(20,20,22,.5); display:grid; place-items:center; padding:16px}
+.modal{width:min(580px,100%); max-height:calc(100% - 24px); overflow:auto; background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:22px; display:grid; gap:15px; box-shadow:0 30px 60px -20px rgba(0,0,0,.35)}
+.modal h2{font-size:20px}
+.toast{position:fixed; left:50%; bottom:calc(84px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:70; background:var(--ink); color:#fff; padding:10px 17px; border-radius:5px; font-family:var(--sans); font-weight:600; font-size:14px; box-shadow:0 10px 30px -10px rgba(0,0,0,.4); max-width:calc(100% - 32px); text-align:center}
+@media (min-width:860px){ .toast{bottom:28px} }
+.empty{padding:28px; text-align:center; color:var(--muted)}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+
+</style>
+</head>
+<body>
+<noscript><p style="max-width:60ch;margin:40px auto;font:16px Georgia,serif">Mon Cahier needs JavaScript: every flashcard, lesson and chart is built in your browser, and nothing is stored on a server.</p></noscript>
+<div class="top"><div class="top-in">
+  <div class="brand">Mon Cahier<small>French A1–A2</small></div>
+  <nav class="nav" id="nav" aria-label="Main navigation"></nav>
+  <div class="spacer"></div>
+  <span id="streak"></span>
+  <button class="iconbtn" data-act="settings" aria-label="Settings"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></button>
+</div></div>
+<main id="main"></main>
+<div id="modal"></div>
+<div id="tip" role="tooltip"></div>
+<script>
+/* ================= A1–A2 CONTENT =================
+   Working language: English. French is the target language.
+   Card fields: [french, meaning, example, example translation, note?]
+*/
+const THEMES=[
+ {id:'salut',vi:'Greetings & courtesy',fr:'Les salutations'},
+ {id:'nombres',vi:'Numbers',fr:'Les nombres'},
+ {id:'temps',vi:'Days & time',fr:'Le temps'},
+ {id:'famille',vi:'Family & friends',fr:'La famille'},
+ {id:'nourriture',vi:'Food & drink',fr:'La nourriture'},
+ {id:'couleurs',vi:'Colours',fr:'Les couleurs'},
+ {id:'adjectifs',vi:'Everyday adjectives',fr:'Les adjectifs'},
+ {id:'maison',vi:'Home & objects',fr:'La maison'},
+ {id:'ville',vi:'Town & places',fr:'La ville'},
+ {id:'verbes',vi:'Common verbs',fr:'Les verbes'},
+ {id:'travail',vi:'Study & work',fr:'Le travail'},
+ {id:'meteo',vi:'Weather & clothes',fr:'Météo et vêtements'}
+];
+
+const WORDS={
+salut:[
+ ["bonjour","hello (daytime)","Bonjour, madame !","Hello, madam!"],
+ ["bonsoir","good evening","Bonsoir, tout le monde.","Good evening, everyone."],
+ ["salut","hi / bye (informal)","Salut, ça va ?","Hi, how are you?"],
+ ["au revoir","goodbye","Au revoir, à demain !","Goodbye, see you tomorrow!"],
+ ["à bientôt","see you soon","Je pars, à bientôt !","I'm off, see you soon!"],
+ ["s'il vous plaît","please (formal)","Un café, s'il vous plaît.","A coffee, please.","Informal: s'il te plaît"],
+ ["merci","thank you","Merci beaucoup !","Thank you very much!"],
+ ["de rien","you're welcome","Merci ! — De rien.","Thanks! — You're welcome."],
+ ["excusez-moi","excuse me (to ask or interrupt)","Excusez-moi, où est la gare ?","Excuse me, where is the station?"],
+ ["pardon","sorry / pardon me","Pardon, je n'ai pas compris.","Sorry, I didn't understand."],
+ ["enchanté","nice to meet you","Enchanté, je m'appelle Lan.","Nice to meet you, my name is Lan.","Feminine: enchantée"],
+ ["comment ça va ?","how are you?","Comment ça va aujourd'hui ?","How are you today?"],
+ ["je m'appelle","my name is","Je m'appelle Paul.","My name is Paul."],
+ ["oui","yes","Oui, je veux bien.","Yes, I'd like that.","Opposite: non"],
+ ["non","no","Non, merci.","No, thank you."]
+],
+nombres:[
+ ["zéro","zero","Zéro erreur !","Not a single mistake!"],
+ ["un","one","J'ai un frère.","I have one brother.","Feminine: une"],
+ ["deux","two","Nous sommes deux.","There are two of us."],
+ ["trois","three","Il y a trois pommes.","There are three apples."],
+ ["quatre","four","Elle a quatre ans.","She is four years old."],
+ ["cinq","five","Il est cinq heures.","It is five o'clock."],
+ ["six","six","J'arrive à six heures.","I'm arriving at six."],
+ ["sept","seven","Une semaine a sept jours.","A week has seven days."],
+ ["huit","eight","J'ai huit euros.","I have eight euros."],
+ ["neuf","nine","Il y a neuf élèves.","There are nine pupils."],
+ ["dix","ten","Ça coûte dix euros.","It costs ten euros."],
+ ["vingt","twenty","Il y a vingt personnes.","There are twenty people."],
+ ["cent","one hundred","Ça fait cent euros.","That comes to one hundred euros."],
+ ["mille","one thousand","Mille mercis !","A thousand thanks!"]
+],
+temps:[
+ ["lundi","Monday","Lundi, je travaille.","On Monday I work."],
+ ["mardi","Tuesday","Mardi, j'ai cours de français.","On Tuesday I have a French class."],
+ ["mercredi","Wednesday","Mercredi, je fais du sport.","On Wednesday I do sport."],
+ ["jeudi","Thursday","Jeudi, on mange au restaurant.","On Thursday we eat out."],
+ ["vendredi","Friday","Vendredi soir, je me repose.","On Friday evening I rest."],
+ ["samedi","Saturday","Samedi, je vais au marché.","On Saturday I go to the market."],
+ ["dimanche","Sunday","Dimanche, je dors tard.","On Sunday I sleep in."],
+ ["aujourd'hui","today","Aujourd'hui, il fait beau.","The weather is fine today."],
+ ["demain","tomorrow","Demain, j'ai un examen.","Tomorrow I have an exam."],
+ ["hier","yesterday","Hier, j'ai étudié le français.","Yesterday I studied French."],
+ ["le matin","the morning","Le matin, je bois du café.","In the morning I drink coffee."],
+ ["le soir","the evening","Le soir, je lis un livre.","In the evening I read a book."],
+ ["maintenant","now","Je mange maintenant.","I'm eating now."],
+ ["la semaine","the week","Cette semaine, je travaille beaucoup.","This week I'm working a lot."]
+],
+famille:[
+ ["la famille","family","Ma famille habite à Hanoï.","My family lives in Hanoi."],
+ ["le père","father","Mon père travaille beaucoup.","My father works a lot."],
+ ["la mère","mother","Ma mère cuisine très bien.","My mother cooks very well."],
+ ["le frère","brother","J'ai un grand frère.","I have an older brother."],
+ ["la sœur","sister","Ma sœur est étudiante.","My sister is a student."],
+ ["le fils","son","Leur fils s'appelle Paul.","Their son is called Paul."],
+ ["la fille","daughter; girl","Sa fille aime la musique.","Her daughter loves music."],
+ ["les parents","parents","Mes parents sont gentils.","My parents are kind."],
+ ["le grand-père","grandfather","Mon grand-père habite à la campagne.","My grandfather lives in the countryside."],
+ ["la grand-mère","grandmother","Ma grand-mère raconte des histoires.","My grandmother tells stories."],
+ ["le mari","husband","Son mari est cuisinier.","Her husband is a cook."],
+ ["la femme","wife; woman","Sa femme travaille à l'hôpital.","His wife works at the hospital."],
+ ["l'enfant","child","Les enfants jouent dans le jardin.","The children play in the garden.","Same form for boys and girls"],
+ ["l'ami","friend (male)","Mon ami parle français.","My friend speaks French.","Feminine: l'amie"]
+],
+nourriture:[
+ ["le pain","bread","Je mange du pain.","I eat bread."],
+ ["l'eau","water","Je voudrais de l'eau.","I would like some water.","Feminine: l'eau (f.)"],
+ ["le café","coffee","Je bois un café.","I'm having a coffee."],
+ ["le thé","tea","Elle préfère le thé.","She prefers tea."],
+ ["le lait","milk","Il boit du lait.","He drinks milk."],
+ ["le fromage","cheese","J'adore le fromage.","I love cheese."],
+ ["la viande","meat","Je ne mange pas de viande.","I don't eat meat."],
+ ["le poisson","fish","Nous mangeons du poisson.","We're eating fish."],
+ ["le riz","rice","Le riz est prêt.","The rice is ready."],
+ ["la pomme","apple","Je prends une pomme.","I'll take an apple."],
+ ["le poulet","chicken","Ce soir, on mange du poulet.","Tonight we're having chicken."],
+ ["l'œuf","egg","Je mange un œuf le matin.","I eat an egg in the morning.","Plural: les œufs"],
+ ["le légume","vegetable","Les légumes sont frais.","The vegetables are fresh."],
+ ["le fruit","fruit","Tu aimes les fruits ?","Do you like fruit?"]
+],
+couleurs:[
+ ["rouge","red","La voiture est rouge.","The car is red."],
+ ["bleu","blue","Le ciel est bleu.","The sky is blue."],
+ ["vert","green","L'herbe est verte.","The grass is green.","Feminine: verte"],
+ ["jaune","yellow","Le soleil est jaune.","The sun is yellow."],
+ ["noir","black","Mon chat est noir.","My cat is black."],
+ ["blanc","white","La neige est blanche.","The snow is white.","Feminine: blanche"],
+ ["gris","grey","Il porte un pull gris.","He's wearing a grey jumper."],
+ ["orange","orange","J'aime la couleur orange.","I like the colour orange.","Never changes form"],
+ ["rose","pink","Elle a une robe rose.","She has a pink dress."],
+ ["marron","brown","Ses yeux sont marron.","Her eyes are brown.","Never changes form"],
+ ["violet","purple","La fleur est violette.","The flower is purple.","Feminine: violette"]
+],
+adjectifs:[
+ ["grand","big, tall","Mon frère est grand.","My brother is tall.","Feminine: grande"],
+ ["petit","small, short","C'est une petite maison.","It's a small house.","Feminine: petite"],
+ ["beau","beautiful, nice","Il fait beau aujourd'hui.","The weather is nice today.","Feminine: belle"],
+ ["gentil","kind","Elle est très gentille.","She is very kind.","Feminine: gentille"],
+ ["content","happy, pleased","Je suis content de te voir.","I'm happy to see you.","Feminine: contente"],
+ ["fatigué","tired","Je suis fatigué ce soir.","I'm tired this evening.","Feminine: fatiguée"],
+ ["triste","sad","Il est triste aujourd'hui.","He is sad today.","Same in the feminine"],
+ ["jeune","young","Ma sœur est jeune.","My sister is young.","Same in the feminine"],
+ ["bon","good, tasty","Ce gâteau est très bon.","This cake is very good.","Feminine: bonne"],
+ ["mauvais","bad","Le temps est mauvais.","The weather is bad.","Feminine: mauvaise"],
+ ["facile","easy","Cet exercice est facile.","This exercise is easy.","Same in the feminine"],
+ ["difficile","difficult","La grammaire est difficile.","Grammar is difficult.","Same in the feminine"],
+ ["chaud","hot, warm","Le café est chaud.","The coffee is hot.","Feminine: chaude"],
+ ["froid","cold","L'eau est froide.","The water is cold.","Feminine: froide"]
+],
+maison:[
+ ["la maison","house","Ma maison est petite.","My house is small."],
+ ["l'appartement","flat, apartment","J'habite dans un appartement.","I live in a flat."],
+ ["la chambre","bedroom","Ma chambre est calme.","My bedroom is quiet."],
+ ["la cuisine","kitchen; cooking","Je suis dans la cuisine.","I'm in the kitchen."],
+ ["la salle de bains","bathroom","La salle de bains est à gauche.","The bathroom is on the left."],
+ ["le salon","living room","Nous regardons la télé au salon.","We watch TV in the living room."],
+ ["la porte","door","Ferme la porte, s'il te plaît.","Close the door, please."],
+ ["la fenêtre","window","J'ouvre la fenêtre.","I'm opening the window."],
+ ["la table","table","Le livre est sur la table.","The book is on the table."],
+ ["la chaise","chair","Il y a quatre chaises.","There are four chairs."],
+ ["le lit","bed","Le chat dort sur le lit.","The cat sleeps on the bed."],
+ ["la clé","key","Où est ma clé ?","Where is my key?"],
+ ["le téléphone","phone","Je cherche mon téléphone.","I'm looking for my phone."],
+ ["l'ordinateur","computer","J'utilise mon ordinateur pour étudier.","I use my computer to study."]
+],
+ville:[
+ ["la ville","town, city","J'aime cette ville.","I like this city."],
+ ["la rue","street","J'habite dans cette rue.","I live on this street."],
+ ["le magasin","shop","Le magasin ouvre à neuf heures.","The shop opens at nine."],
+ ["le supermarché","supermarket","Je fais les courses au supermarché.","I do the shopping at the supermarket."],
+ ["la boulangerie","bakery","La boulangerie est au coin de la rue.","The bakery is on the corner."],
+ ["le restaurant","restaurant","Ce restaurant est excellent.","This restaurant is excellent."],
+ ["la gare","train station","La gare est près d'ici.","The station is near here."],
+ ["l'aéroport","airport","Je vais à l'aéroport en taxi.","I'm going to the airport by taxi."],
+ ["l'école","school","Les enfants vont à l'école.","The children go to school."],
+ ["l'hôpital","hospital","Ma mère travaille à l'hôpital.","My mother works at the hospital."],
+ ["la banque","bank","La banque est fermée le dimanche.","The bank is closed on Sundays."],
+ ["le parc","park","Nous marchons dans le parc.","We walk in the park."],
+ ["la pharmacie","pharmacy","Il y a une pharmacie ici ?","Is there a pharmacy here?"],
+ ["le marché","market","Je vais au marché le samedi.","I go to the market on Saturdays."]
+],
+verbes:[
+ ["être","to be","Nous sommes vietnamiens.","We are Vietnamese.","je suis · tu es · il est · nous sommes · vous êtes · ils sont"],
+ ["avoir","to have","J'ai deux frères.","I have two brothers.","j'ai · tu as · il a · nous avons · vous avez · ils ont"],
+ ["aller","to go","Je vais au travail.","I'm going to work.","je vais · tu vas · il va · nous allons · vous allez · ils vont"],
+ ["faire","to do, to make","Qu'est-ce que tu fais ?","What are you doing?","je fais · tu fais · il fait · nous faisons · vous faites · ils font"],
+ ["parler","to speak","Je parle un peu français.","I speak a little French.","-er: je parle · nous parlons · ils parlent"],
+ ["manger","to eat","Nous mangeons à midi.","We eat at noon.","nous mangeons (keeps the e)"],
+ ["boire","to drink","Il boit de l'eau.","He's drinking water.","je bois · nous buvons · ils boivent"],
+ ["aimer","to like, to love","J'aime le café.","I like coffee.","-er: j'aime · nous aimons"],
+ ["habiter","to live (somewhere)","Elle habite à Paris.","She lives in Paris.","-er: j'habite · nous habitons"],
+ ["travailler","to work","Je travaille le lundi.","I work on Mondays.","-er: je travaille · nous travaillons"],
+ ["vouloir","to want","Je veux apprendre le français.","I want to learn French.","je veux · nous voulons · ils veulent"],
+ ["pouvoir","can, to be able to","Vous pouvez répéter, s'il vous plaît ?","Could you repeat that, please?","je peux · nous pouvons · ils peuvent"],
+ ["prendre","to take; to catch (transport)","Je prends le bus.","I take the bus.","je prends · nous prenons · ils prennent"],
+ ["venir","to come","Tu viens ce soir ?","Are you coming tonight?","je viens · nous venons · ils viennent"],
+ ["comprendre","to understand","Je ne comprends pas.","I don't understand.","je comprends · nous comprenons · ils comprennent"],
+ ["apprendre","to learn","J'apprends le français.","I'm learning French.","j'apprends · nous apprenons · ils apprennent"]
+],
+travail:[
+ ["le travail","work, job","Mon travail est intéressant.","My job is interesting."],
+ ["le bureau","office; desk","Je suis au bureau.","I'm at the office."],
+ ["le médecin","doctor","Le médecin est très gentil.","The doctor is very kind."],
+ ["le professeur","teacher","Le professeur parle lentement.","The teacher speaks slowly."],
+ ["l'étudiant","student","Les étudiants apprennent le français.","The students are learning French.","Feminine: l'étudiante"],
+ ["le livre","book","Ce livre est intéressant.","This book is interesting."],
+ ["le cahier","notebook","J'écris dans mon cahier.","I write in my notebook."],
+ ["le stylo","pen","Tu as un stylo ?","Do you have a pen?"],
+ ["le cours","class, lesson","Le cours commence à dix heures.","The class starts at ten."],
+ ["l'examen","exam","J'ai un examen demain.","I have an exam tomorrow."],
+ ["la question","question","J'ai une question.","I have a question."],
+ ["la réponse","answer","Quelle est la réponse ?","What is the answer?"],
+ ["le mot","word","Ce mot est nouveau pour moi.","This word is new to me."]
+],
+meteo:[
+ ["le temps","weather; time","Quel temps fait-il ?","What's the weather like?"],
+ ["le soleil","sun, sunshine","Il y a du soleil.","It's sunny."],
+ ["la pluie","rain","J'aime la pluie.","I like the rain."],
+ ["il pleut","it's raining","Il pleut ce matin.","It's raining this morning."],
+ ["la neige","snow","La neige tombe.","The snow is falling."],
+ ["le vent","wind","Il y a beaucoup de vent.","It's very windy."],
+ ["le pantalon","trousers","Ce pantalon est trop grand.","These trousers are too big.","Singular in French"],
+ ["la chemise","shirt","Il porte une chemise blanche.","He's wearing a white shirt."],
+ ["la robe","dress","Elle porte une robe rouge.","She's wearing a red dress."],
+ ["le manteau","coat","Prends ton manteau, il fait froid.","Take your coat, it's cold."],
+ ["les chaussures","shoes","Mes chaussures sont noires.","My shoes are black.","Always plural (f. pl.)"],
+ ["le sac","bag","Mon sac est lourd.","My bag is heavy."],
+ ["le chapeau","hat","Il met un chapeau.","He puts on a hat."]
+]
+};
+
+const CARDS=[];
+THEMES.forEach(t=>WORDS[t.id].forEach((w,i)=>CARDS.push({id:t.id+'_'+String(i+1).padStart(2,'0'),theme:t.id,fr:w[0],vi:w[1],ex:w[2],exvi:w[3],note:w[4]||''})));
+const CARD_BY_ID={}; CARDS.forEach(c=>CARD_BY_ID[c.id]=c);
+
+/* ================= GRAMMAR =================
+ blocks: {h, p, tbl:{head,rows}, ex:[[fr,en]], tip}
+ qs: {t:'mcq', q, o:[...], a:index, w}  |  {t:'fill', q (uses ___), a:[answers], w, h}
+*/
+const LESSONS=[
+{id:'art',lvl:'A1',t:'Articles',fr:'Les articles',sum:'un / une / des and le / la / l\' / les',
+ blocks:[
+  {h:'Every French noun has a gender',p:'Each noun is either <b>masculine</b> (masculin) or <b>feminine</b> (féminin). There is no reliable trick, so <b>learn every noun together with its article</b>: <i>le pain</i>, <i>la table</i>. The plural usually adds <b>-s</b>, which stays silent: <i>un ami → des amis</i>.'},
+  {h:'The two families of articles',tbl:{head:['','Masculine','Feminine','Plural'],rows:[['Indefinite (a…, some…)','un','une','des'],['Definite (the…, or in general)','le  ·  l\'','la  ·  l\'','les']]}},
+  {p:'<b>Indefinite</b>: something not yet known, or mentioned for the first time. <b>Definite</b>: something specific and already known, or a whole category in general. Before a <b>vowel or silent h</b>, <i>le</i> and <i>la</i> shrink to <b>l\'</b>.',
+   ex:[['J\'ai un frère et une sœur.','I have a brother and a sister.'],['Le livre est sur la table.','The book is on the table.'],['L\'école est grande.','The school is big.'],['Les enfants jouent.','The children are playing.']]}
+ ],
+ qs:[
+  {t:'mcq',q:'___ pomme (an apple)',o:['un','une','des'],a:1,w:'"pomme" is feminine, so <b>une</b>.'},
+  {t:'mcq',q:'___ école est grande.',o:['Le','La','L\''],a:2,w:'"école" starts with a vowel, so <i>la</i> becomes <b>l\'</b>.'},
+  {t:'mcq',q:'J\'ai ___ frère. (a brother)',o:['un','une','des'],a:0,w:'"frère" is masculine singular → <b>un</b>.'},
+  {t:'fill',q:'Il y a ___ chats dans le jardin. (some cats, not specific)',a:['des'],w:'Indefinite plural → <b>des</b>.',h:'un / une / des'},
+  {t:'mcq',q:'___ amis de Paul sont sympas. (Paul\'s friends, specific)',o:['Le','Les','Des'],a:1,w:'Plural and definite (Paul\'s friends) → <b>les</b>.'},
+  {t:'fill',q:'___ eau est froide. (the water)',a:['l\'','l’'],w:'"eau" starts with a vowel → <b>l\'eau</b>.',h:'Include the apostrophe: l\''}
+ ]},
+{id:'etreavoir',lvl:'A1',t:'Être and Avoir',fr:'Être et avoir',sum:'The two most important verbs',
+ blocks:[
+  {h:'Present tense',tbl:{head:['Subject','être (to be)','avoir (to have)'],rows:[['je','suis','ai (j\'ai)'],['tu','es','as'],['il / elle / on','est','a'],['nous','sommes','avons'],['vous','êtes','avez'],['ils / elles','sont','ont']]}},
+  {h:'Which one do you need?',p:'<b>être</b>: jobs, nationality, qualities, location, states. <b>avoir</b>: possession, <b>age</b> (French says "to have 20 years"), and feelings such as <i>avoir faim</i> (to be hungry), <i>avoir soif</i> (to be thirsty), <i>avoir chaud / froid</i> (to be hot / cold).',
+   ex:[['Nous sommes vietnamiens.','We are Vietnamese.'],['Elle est fatiguée.','She is tired.'],['J\'ai vingt ans.','I am twenty years old.'],['Ils ont faim.','They are hungry.']]},
+  {tip:'Common slip: "Je suis 20 ans". Age always takes <b>avoir</b>: J\'ai 20 ans.'}
+ ],
+ qs:[
+  {t:'mcq',q:'Nous ___ vietnamiens.',o:['sommes','sont','avons'],a:0,w:'Nous + être → <b>sommes</b>.'},
+  {t:'fill',q:'Tu ___ un frère ? (avoir)',a:['as'],w:'Tu + avoir → <b>as</b>.',h:'avoir'},
+  {t:'mcq',q:'Elle ___ vingt ans.',o:['est','a','as'],a:1,w:'Age uses <b>avoir</b>: elle <b>a</b> vingt ans.'},
+  {t:'fill',q:'Vous ___ fatigués ? (être)',a:['êtes'],w:'Vous + être → <b>êtes</b>.',h:'être'},
+  {t:'mcq',q:'Ils ___ faim.',o:['sont','ont','a'],a:1,w:'"Avoir faim" = to be hungry → ils <b>ont</b> faim.'},
+  {t:'fill',q:'J\'___ deux chats. (avoir)',a:['ai','j\'ai','j’ai'],w:'Je + avoir → <b>j\'ai</b>.',h:'avoir'},
+  {t:'mcq',q:'Je ___ content.',o:['suis','ai','es'],a:0,w:'States and feelings use être → je <b>suis</b> content.'}
+ ]},
+{id:'er',lvl:'A1',t:'-ER verbs',fr:'Les verbes en -er',sum:'parler, aimer, habiter, manger…',
+ blocks:[
+  {h:'How to conjugate',p:'Drop <b>-er</b> and add the endings <b>-e, -es, -e, -ons, -ez, -ent</b>. This is by far the largest family, roughly 90% of French verbs.',
+   tbl:{head:['Subject','parler','aimer','habiter'],rows:[['je','parle','aime','habite (j\'habite)'],['tu','parles','aimes','habites'],['il / elle','parle','aime','habite'],['nous','parlons','aimons','habitons'],['vous','parlez','aimez','habitez'],['ils / elles','parlent','aiment','habitent']]}},
+  {h:'Things to watch',p:'Before a vowel, <i>je</i> becomes <b>j\'</b> (j\'aime, j\'habite). With <i>manger</i>, the <i>nous</i> form keeps the e: <b>nous mangeons</b>. The <i>-ent</i> ending is <b>silent</b>: <i>il parle</i> and <i>ils parlent</i> sound identical.',
+   ex:[['Je parle un peu français.','I speak a little French.'],['Nous habitons à Hanoï.','We live in Hanoi.'],['Ils aiment le café.','They like coffee.']]}
+ ],
+ qs:[
+  {t:'fill',q:'Je ___ français. (parler)',a:['parle'],w:'Je + parler → <b>parle</b>.',h:'parler'},
+  {t:'fill',q:'Nous ___ à Paris. (habiter)',a:['habitons'],w:'Nous takes <b>-ons</b>: habitons.',h:'habiter'},
+  {t:'mcq',q:'Ils ___ le café. (aimer)',o:['aime','aimes','aiment'],a:2,w:'Ils takes <b>-ent</b>: aiment.'},
+  {t:'fill',q:'Tu ___ beaucoup ? (travailler)',a:['travailles'],w:'Tu takes <b>-es</b>: travailles.',h:'travailler'},
+  {t:'mcq',q:'Nous ___ au restaurant. (manger)',o:['mangons','mangeons','mangez'],a:1,w:'Manger keeps the e in the nous form so the sound stays soft: <b>mangeons</b>.'},
+  {t:'fill',q:'Vous ___ très bien. (parler)',a:['parlez'],w:'Vous takes <b>-ez</b>: parlez.',h:'parler'},
+  {t:'mcq',q:'J\'___ le fromage. (aimer)',o:['aime','aimes','aiment'],a:0,w:'Je takes <b>-e</b>: j\'aime.'}
+ ]},
+{id:'neg',lvl:'A1',t:'Negation',fr:'La négation',sum:'ne … pas',
+ blocks:[
+  {h:'The pattern',p:'Put <b>ne</b> before the verb and <b>pas</b> after it. Before a vowel or silent h, <i>ne</i> becomes <b>n\'</b>.',
+   ex:[['Je ne parle pas anglais.','I don\'t speak English.'],['Il n\'habite pas ici.','He doesn\'t live here.'],['Nous ne mangeons pas de viande.','We don\'t eat meat.']]},
+  {h:'After a negative: un / une / des → de',p:'With avoir and most other verbs, <i>un, une, des</i> (and <i>du, de la</i>) all turn into <b>de</b> (d\' before a vowel). After <b>être</b>, though, the article stays as it is.',
+   ex:[['J\'ai un frère. → Je n\'ai pas de frère.','I have a brother. → I don\'t have a brother.'],['C\'est un chat. → Ce n\'est pas un chat.','It\'s a cat. → It isn\'t a cat.']]}
+ ],
+ qs:[
+  {t:'mcq',q:'Which sentence is correctly negative?',o:['Je ne parle pas anglais.','Je parle ne pas anglais.','Je pas parle anglais.'],a:0,w:'<b>ne</b> before the verb, <b>pas</b> after it.'},
+  {t:'mcq',q:'Il ___ habite pas ici.',o:['ne','n\'','non'],a:1,w:'"habite" starts with a silent h → <b>n\'</b>habite.'},
+  {t:'fill',q:'Je n\'ai pas ___ frère. (de / un)',a:['de'],w:'After a negative, un → <b>de</b>.',h:'de or d\''},
+  {t:'mcq',q:'Elle ne mange pas ___ viande.',o:['de','du','de la'],a:0,w:'After a negative, du/de la → <b>de</b>.'},
+  {t:'fill',q:'Tu ___ comprends pas. (ne / n\')',a:['ne'],w:'"comprends" starts with a consonant → <b>ne</b>.',h:'ne or n\''},
+  {t:'mcq',q:'Ce n\'est pas ___ chat, c\'est un chien.',o:['un','de','d\''],a:0,w:'After <b>être</b> the article is unchanged: ce n\'est pas <b>un</b> chat.'}
+ ]},
+{id:'quest',lvl:'A1',t:'Asking questions',fr:'Poser des questions',sum:'est-ce que, où, comment, combien…',
+ blocks:[
+  {h:'Three ways to ask yes/no',tbl:{head:['Way','Example','Register'],rows:[['Rising intonation','Tu parles français ?','Casual, the most common'],['Est-ce que + sentence','Est-ce que tu parles français ?','Neutral'],['Inversion','Parles-tu français ?','Formal, written French']]}},
+  {h:'Question words',tbl:{head:['Word','Meaning','Example'],rows:[['où','where','Où habites-tu ?'],['quand','when','Quand tu arrives ?'],['comment','how','Comment tu t\'appelles ?'],['pourquoi','why','Pourquoi tu étudies le français ?'],['qui','who','Qui est-ce ?'],['combien','how much / how many','Combien ça coûte ?']]},
+   ex:[['Où est la gare ?','Where is the station?'],['Combien ça coûte ?','How much does it cost?']]}
+ ],
+ qs:[
+  {t:'mcq',q:'___ habites-tu ? — J\'habite à Hanoï.',o:['Où','Quand','Qui'],a:0,w:'The answer is a place → ask <b>où</b>.'},
+  {t:'mcq',q:'___ tu t\'appelles ? — Je m\'appelle Lan.',o:['Comment','Combien','Pourquoi'],a:0,w:'"Comment tu t\'appelles ?" = What is your name?'},
+  {t:'fill',q:'___-ce que tu aimes le thé ? (Est-ce que)',a:['est','est-ce que'],w:'The pattern is <b>est-ce que</b> + a normal sentence.',h:'est'},
+  {t:'mcq',q:'___ ça coûte ? — Dix euros.',o:['Combien','Comment','Où'],a:0,w:'Asking about an amount or price → <b>combien</b>.'},
+  {t:'mcq',q:'Which question uses intonation only?',o:['Tu as faim ?','Est-ce que tu as faim ?','As-tu faim ?'],a:0,w:'The word order stays that of a statement; only the voice rises.'},
+  {t:'mcq',q:'___ tu étudies le français ? — Parce que j\'aime la France.',o:['Pourquoi','Qui','Quand'],a:0,w:'The answer starts with "parce que…" (because…) → ask <b>pourquoi</b>.'}
+ ]},
+{id:'poss',lvl:'A1',t:'Possessive adjectives',fr:'Les adjectifs possessifs',sum:'mon, ma, mes, ton, son, notre…',
+ blocks:[
+  {h:'The full table',tbl:{head:['Owner','Masc. sing.','Fem. sing.','Plural'],rows:[['je (my)','mon','ma','mes'],['tu (your)','ton','ta','tes'],['il / elle (his / her)','son','sa','ses'],['nous (our)','notre','notre','nos'],['vous (your)','votre','votre','vos'],['ils / elles (their)','leur','leur','leurs']]}},
+  {h:'It agrees with the thing owned',p:'The possessive agrees with the <b>noun that follows</b> in gender and number, <b>not</b> with the owner: <i>son frère</i> means "his brother" or "her brother" alike. Before a feminine noun starting with a vowel, use <b>mon / ton / son</b>: <i>mon amie</i>, <i>ton école</i>.',
+   ex:[['Mon père et ma mère travaillent.','My father and my mother work.'],['Mon amie s\'appelle Lan.','My friend (female) is called Lan.'],['Nos enfants sont grands.','Our children are grown up.']]}
+ ],
+ qs:[
+  {t:'mcq',q:'___ mère est gentille. (my mother)',o:['Mon','Ma','Mes'],a:1,w:'"mère" is feminine singular → <b>ma</b>.'},
+  {t:'mcq',q:'___ amie s\'appelle Lan. (my friend)',o:['Ma','Mon','Mes'],a:1,w:'A feminine noun starting with a vowel takes <b>mon</b> amie.'},
+  {t:'fill',q:'Voici ___ parents. (your – tu)',a:['tes'],w:'Tu + a plural noun → <b>tes</b>.',h:'ton / ta / tes'},
+  {t:'mcq',q:'Nous aimons ___ maison. (our)',o:['notre','nos','votre'],a:0,w:'Nous + a singular noun → <b>notre</b>.'},
+  {t:'mcq',q:'Paul et Marie aiment ___ enfants. (their)',o:['son','leurs','leur'],a:1,w:'Several owners + a plural noun → <b>leurs</b>.'},
+  {t:'fill',q:'Elle parle de ___ frère. (her)',a:['son'],w:'"frère" is masculine singular → <b>son</b>.',h:'son / sa / ses'}
+ ]},
+{id:'adj',lvl:'A1',t:'Adjectives: agreement and place',fr:'Les adjectifs',sum:'grand → grande, and where the adjective goes',
+ blocks:[
+  {h:'Agreement',p:'The feminine adds <b>-e</b> and the plural adds <b>-s</b>. An adjective that already ends in -e stays the same in the feminine (<i>triste</i>). A handful of irregular forms simply have to be learned.',
+   tbl:{head:['Masculine','Feminine','Masc. plural'],rows:[['grand','grande','grands'],['petit','petite','petits'],['content','contente','contents'],['triste','triste','tristes'],['beau','belle','beaux'],['bon','bonne','bons'],['gentil','gentille','gentils'],['blanc','blanche','blancs']]}},
+  {h:'Where it goes',p:'Most adjectives come <b>after</b> the noun (<i>une voiture rouge</i>). A small group of short, common ones comes <b>before</b> it — remember <b>BAGS</b>: <b>B</b>eauty (beau, joli), <b>A</b>ge (jeune, vieux, nouveau), <b>G</b>oodness (bon, mauvais), <b>S</b>ize (grand, petit).',
+   ex:[['Une voiture rouge.','A red car.'],['Une petite maison.','A small house.'],['Un bon café.','A good coffee.'],['Elle est très gentille.','She is very kind.']]}
+ ],
+ qs:[
+  {t:'mcq',q:'Elle est ___. (grand)',o:['grand','grande','grands'],a:1,w:'Feminine singular subject → <b>grande</b>.'},
+  {t:'mcq',q:'Ils sont ___. (content)',o:['content','contente','contents'],a:2,w:'Masculine plural subject → <b>contents</b>.'},
+  {t:'fill',q:'Une maison ___. (blanc)',a:['blanche'],w:'The feminine of blanc is <b>blanche</b>.',h:'blanc → ?'},
+  {t:'mcq',q:'Which one is right?',o:['Une voiture rouge','Une rouge voiture','Un rouge voiture'],a:0,w:'Colour adjectives go <b>after</b> the noun.'},
+  {t:'mcq',q:'C\'est une ___ maison. (petit)',o:['petit','petite','petites'],a:1,w:'Maison is feminine singular, and "petit" (Size) goes before → <b>petite</b>.'},
+  {t:'fill',q:'Ma sœur est ___. (gentil)',a:['gentille'],w:'The feminine of gentil is <b>gentille</b>.',h:'gentil → ?'}
+ ]},
+{id:'allerade',lvl:'A1',t:'Aller, à and de',fr:'Aller, à, de + article',sum:'au, aux, du, des',
+ blocks:[
+  {h:'The verb aller (to go)',tbl:{head:['Subject','aller'],rows:[['je','vais'],['tu','vas'],['il / elle','va'],['nous','allons'],['vous','allez'],['ils / elles','vont']]}},
+  {h:'Contractions with à and de',p:'<b>à</b> (to, at) and <b>de</b> (of, from) merge with <i>le</i> and <i>les</i>. With <i>la</i> and <i>l\'</i> nothing changes.',
+   tbl:{head:['','+ le','+ la','+ l\'','+ les'],rows:[['à','au','à la','à l\'','aux'],['de','du','de la','de l\'','des']]}},
+  {p:'Use <b>aller à</b> for where you are going, <b>venir de</b> for where you have come from.',ex:[['Je vais au marché.','I\'m going to the market.'],['Nous allons à la gare.','We\'re going to the station.'],['Elle vient de l\'école.','She\'s coming from school.'],['Il parle du professeur.','He\'s talking about the teacher.']]}
+ ],
+ qs:[
+  {t:'mcq',q:'Je vais ___ marché.',o:['à le','au','du'],a:1,w:'à + le = <b>au</b>.'},
+  {t:'mcq',q:'Nous allons ___ gare.',o:['au','à la','aux'],a:1,w:'"gare" is feminine → <b>à la</b>.'},
+  {t:'mcq',q:'Il parle ___ professeur.',o:['de le','du','des'],a:1,w:'de + le = <b>du</b>.'},
+  {t:'fill',q:'Tu ___ au cinéma ? (aller)',a:['vas'],w:'Tu + aller → <b>vas</b>.',h:'aller'},
+  {t:'mcq',q:'Nous parlons ___ enfants. (de + les)',o:['du','des','de la'],a:1,w:'de + les = <b>des</b>.'},
+  {t:'fill',q:'Vous ___ à l\'école ? (aller)',a:['allez'],w:'Vous + aller → <b>allez</b>.',h:'aller'},
+  {t:'mcq',q:'Elle vient ___ boulangerie.',o:['de la','du','à la'],a:0,w:'"boulangerie" is feminine, and "venir de" → <b>de la</b>.'}
+ ]},
+{id:'part',lvl:'A2',t:'Partitive articles',fr:'Les articles partitifs',sum:'du, de la, de l\', des',
+ blocks:[
+  {h:'Some, a bit of',p:'Use <b>du / de la / de l\' / des</b> for <b>an unspecified quantity</b> ("some…"), above all with food, drink and materials. Compare <i>J\'aime le café</i> (I like coffee in general — definite article) with <i>Je bois du café</i> (I\'m drinking some coffee).',
+   tbl:{head:['Masculine','Feminine','Before a vowel','Plural'],rows:[['du','de la','de l\'','des']]},
+   ex:[['Je mange du pain.','I\'m eating some bread.'],['Elle boit de l\'eau.','She\'s drinking some water.'],['Il prend de la salade.','He\'s having some salad.']]},
+  {h:'Negatives and quantities',p:'After a negative, or after a word of quantity, use <b>de / d\'</b>: <i>Je ne mange pas de pain</i>, <i>beaucoup de monde</i>, <i>un peu de sucre</i>.'}
+ ],
+ qs:[
+  {t:'mcq',q:'Je mange ___ pain.',o:['du','de la','des'],a:0,w:'"pain" is masculine and uncountable here → <b>du</b>.'},
+  {t:'mcq',q:'Elle boit ___ eau.',o:['du','de l\'','de la'],a:1,w:'"eau" starts with a vowel → <b>de l\'</b>.'},
+  {t:'fill',q:'Il prend ___ salade. (partitive)',a:['de la'],w:'"salade" is feminine → <b>de la</b>.',h:'du / de la / de l\''},
+  {t:'mcq',q:'J\'aime ___ fromage. (in general)',o:['le','du','un'],a:0,w:'After aimer/adorer/détester (liking in general) use the <b>definite</b> article.'},
+  {t:'fill',q:'Je ne bois pas ___ café. (negative)',a:['de','d\''],w:'After a negative → <b>de</b> (or d\' before a vowel).',h:'de / d\''},
+  {t:'mcq',q:'Il y a beaucoup ___ monde.',o:['de','du','des'],a:0,w:'After a quantity word (beaucoup) → <b>de</b>.'},
+  {t:'mcq',q:'Tu veux ___ légumes ?',o:['du','de la','des'],a:2,w:'"légumes" is plural → <b>des</b>.'}
+ ]},
+{id:'pcavoir',lvl:'A2',t:'Past tense with avoir',fr:'Le passé composé (avoir)',sum:'j\'ai mangé, nous avons parlé',
+ blocks:[
+  {h:'The pattern',p:'<b>avoir</b> in the present + a <b>past participle</b>. This is the everyday past tense for completed actions.',
+   tbl:{head:['Group','Participle','Example'],rows:[['-er','-er → <b>é</b>','parler → parlé'],['-ir','-ir → <b>i</b>','finir → fini, dormir → dormi'],['-re','-re → <b>u</b>','vendre → vendu']]}},
+  {h:'Irregular participles worth memorising',tbl:{head:['Verb','Participle','Verb','Participle'],rows:[['avoir','eu','voir','vu'],['être','été','boire','bu'],['faire','fait','vouloir','voulu'],['prendre','pris','pouvoir','pu']]},
+   ex:[['J\'ai mangé une pomme.','I ate an apple.'],['Elle a fait ses devoirs.','She did her homework.'],['Nous n\'avons pas parlé.','We didn\'t talk.']]},
+  {tip:'The negative wraps around the <b>auxiliary</b>, not the participle: Je <b>n\'</b>ai <b>pas</b> mangé.'}
+ ],
+ qs:[
+  {t:'fill',q:'Hier, j\'ai ___ le français. (étudier)',a:['étudié'],w:'étudier → <b>étudié</b>.',h:'-er → é'},
+  {t:'mcq',q:'Nous ___ mangé au restaurant.',o:['avons','sommes','ont'],a:0,w:'Nous + avoir → <b>avons</b> + participle.'},
+  {t:'fill',q:'Elle a ___ un film. (voir)',a:['vu'],w:'voir → <b>vu</b> (irregular).',h:'voir'},
+  {t:'mcq',q:'The past participle of "faire" is:',o:['faisé','fait','fais'],a:1,w:'faire → <b>fait</b>.'},
+  {t:'mcq',q:'Ils ___ pris le bus.',o:['ont','sont','avons'],a:0,w:'Ils + avoir → <b>ont</b>.'},
+  {t:'fill',q:'Je n\'ai pas ___ cette nuit. (dormir)',a:['dormi'],w:'dormir → <b>dormi</b>.',h:'-ir → i'},
+  {t:'fill',q:'Tu as ___ le café ? (boire)',a:['bu'],w:'boire → <b>bu</b> (irregular).',h:'boire'}
+ ]},
+{id:'pcetre',lvl:'A2',t:'Past tense with être',fr:'Le passé composé (être)',sum:'je suis allé(e), elle est arrivée',
+ blocks:[
+  {h:'When do you use être?',p:'A small group of verbs about <b>movement or a change of state</b> takes <b>être</b> instead of avoir: <i>aller, venir, arriver, partir, entrer, sortir, monter, descendre, naître, mourir, rester, tomber, retourner</i>. Reflexive verbs (se lever, se coucher…) take être too.'},
+  {h:'The participle agrees with the subject',p:'With être, the past participle <b>agrees with the subject</b>: add <b>-e</b> for feminine and <b>-s</b> for plural.',
+   tbl:{head:['Subject','aller'],rows:[['il','est allé'],['elle','est allée'],['ils','sont allés'],['elles','sont allées']]},
+   ex:[['Je suis allé au marché.','I went to the market. (male speaker)'],['Elle est arrivée hier.','She arrived yesterday.'],['Ils sont partis à huit heures.','They left at eight.']]}
+ ],
+ qs:[
+  {t:'mcq',q:'Hier, je ___ allé au parc. (male speaker)',o:['suis','ai','es'],a:0,w:'"aller" takes <b>être</b>: je suis allé.'},
+  {t:'mcq',q:'Elle est ___ à Paris. (arriver)',o:['arrivé','arrivée','arrivés'],a:1,w:'Feminine singular subject → add <b>-e</b>: arrivée.'},
+  {t:'fill',q:'Nous sommes ___ à huit heures. (partir – all male)',a:['partis'],w:'Masculine plural → <b>partis</b>.',h:'partir'},
+  {t:'mcq',q:'Which one is right?',o:['Elle a allé au marché.','Elle est allée au marché.','Elle est allé au marché.'],a:1,w:'aller takes <b>être</b>, and the participle agrees with "elle" → <b>allée</b>.'},
+  {t:'mcq',q:'Ils ___ restés à la maison.',o:['ont','sont','avons'],a:1,w:'"rester" takes <b>être</b> → ils sont restés.'},
+  {t:'fill',q:'Elles sont ___ hier. (venir)',a:['venues'],w:'Feminine plural → <b>venues</b>.',h:'venir'}
+ ]},
+{id:'futur',lvl:'A2',t:'The near future',fr:'Le futur proche',sum:'je vais manger, nous allons partir',
+ blocks:[
+  {h:'The pattern',p:'<b>aller</b> in the present + an <b>infinitive</b>. It covers what is about to happen or what has been planned — much like "going to" in English.',
+   ex:[['Je vais manger.','I\'m going to eat.'],['Nous allons partir demain.','We\'re leaving tomorrow.'],['Tu vas apprendre le français.','You\'re going to learn French.']]},
+  {h:'Negative',p:'<b>ne … pas</b> wraps around <b>aller</b>, and the infinitive follows: <i>Je <b>ne</b> vais <b>pas</b> manger.</i>'},
+  {tip:'Time expressions that often go with it: <i>demain</i> (tomorrow), <i>ce soir</i> (tonight), <i>la semaine prochaine</i> (next week), <i>bientôt</i> (soon).'}
+ ],
+ qs:[
+  {t:'mcq',q:'Demain, je ___ travailler.',o:['vais','vas','va'],a:0,w:'Je + aller → <b>vais</b>.'},
+  {t:'fill',q:'Nous ___ manger au restaurant. (aller)',a:['allons'],w:'Nous + aller → <b>allons</b>.',h:'aller'},
+  {t:'mcq',q:'Elle ___ partir ce soir.',o:['va','vas','vont'],a:0,w:'Elle + aller → <b>va</b>.'},
+  {t:'mcq',q:'Which negative is right?',o:['Je ne vais pas partir.','Je vais ne pas partir.','Je ne pas vais partir.'],a:0,w:'<b>ne … pas</b> wraps around <b>aller</b>.'},
+  {t:'fill',q:'Ils ___ arriver demain. (aller)',a:['vont'],w:'Ils + aller → <b>vont</b>.',h:'aller'},
+  {t:'mcq',q:'Tu ___ apprendre le français ?',o:['vas','va','allez'],a:0,w:'Tu + aller → <b>vas</b>.'}
+ ]}
+];
+
+(function(){
+'use strict';
+/* ================= utilities ================= */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function today(){const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000);}
+function dstr(n){return new Date(n*86400000).toISOString().slice(0,10);}
+const MONL=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function vd(n){const p=dstr(n).split('-');return (+p[2])+' '+MONL[+p[1]-1];}
+function dow(n){return (n+3)%7;} /* 0 = Monday */
+const DOWL=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const deacc=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/œ/g,'oe').replace(/æ/g,'ae');
+const norm=s=>String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').trim();
+const ARTRE=/^(le |la |l'|les |un |une |des |du |de la |de l')/;
+
+/* ================= icons ================= */
+const IC={
+ today:'<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
+ cards:'<rect x="3" y="7" width="14" height="13" rx="2"/><path d="M7 7V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/>',
+ book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 8h6M9 12h6"/>',
+ ear:'<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>',
+ chart:'<path d="M3 20h18M6 20v-7M11 20V5M16 20v-10M21 20v-4"/>',
+ speaker:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
+ sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
+ flame:'<path d="M12 3c1 3.5 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.500 2-4.500 0 2 1 3 2 3 0-3-1-5.500 1-8.500z"/>',
+ check:'<path d="M5 12.500l4.500 4.500L19 7.500"/>',
+ back:'<path d="M15 5l-7 7 7 7"/>',
+ x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ play:'<path d="M8 5v14l11-7z"/>',
+ alert:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.1"/>',
+ turtle:'<path d="M3 15c0-4 3-7 8-7s8 3 8 7z"/><path d="M19 13l3-1M5 18v2M15 18v2"/>'
+};
+const ico=(n,s=20)=>`<svg class="ico" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
+
+/* ================= speech ================= */
+const TTS={ok:typeof speechSynthesis!=='undefined'&&typeof SpeechSynthesisUtterance!=='undefined',voice:null};
+function loadVoices(){if(!TTS.ok)return;try{const v=speechSynthesis.getVoices();TTS.voice=v.find(x=>/^fr[-_]fr/i.test(x.lang))||v.find(x=>/^fr/i.test(x.lang))||null;}catch(e){}}
+if(TTS.ok){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',loadVoices);}catch(e){}}
+function speak(text,slow){
+  if(!TTS.ok||!text)return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text).replace(/\s*\/\s*/g,', '));u.lang='fr-FR';if(TTS.voice)u.voice=TTS.voice;u.rate=slow?.6:.9;speechSynthesis.speak(u);}catch(e){}
+}
+const spk=(t,slow,sm)=>TTS.ok?`<button class="iconbtn${sm?' sm':''}" data-act="speak" data-t="${esc(t)}"${slow?' data-slow="1"':''} aria-label="Play pronunciation">${ico(slow?'turtle':'speaker',sm?16:19)}</button>`:'';
+
+/* ================= state & storage ================= */
+const KEY='moncahier.v1';
+const BASE_CARDS=CARDS.slice(),BASE_THEMES=THEMES.slice(),BASE_LESSONS=LESSONS.slice();
+const CONTENT_MAX=230000;
+const defaults=()=>({v:1,updatedAt:0,contentAt:0,settings:{newPerDay:10,goal:20,auto:true,mode:'mix',model:'claude-sonnet-5'},cards:{},days:{},grammar:{},newToday:{d:0,n:0},decks:{},lessons:{}});
+function fix(o){
+  const s=Object.assign(defaults(),o||{});
+  s.settings=Object.assign(defaults().settings,(o&&o.settings)||{});
+  ['cards','days','grammar','decks','lessons'].forEach(k=>{if(!s[k]||typeof s[k]!=='object'||Array.isArray(s[k]))s[k]={};});
+  s.newToday=s.newToday||{d:0,n:0};
+  return s;
+}
+const safeHtml=s=>esc(s).replace(/&lt;(\/?)(b|i)&gt;/gi,'<$1$2>');
+function validQ(q){
+  if(!q||typeof q!=='object')return null;
+  const txt=String(q.q==null?'':q.q).trim();if(!txt)return null;
+  const w=safeHtml(String(q.w||q.why||''));
+  if(q.t==='mcq'){
+    const o=Array.isArray(q.o)?q.o.map(x=>String(x)).filter(x=>x.trim()):[],a=Number(q.a);
+    if(o.length<2||o.length>5||!Number.isInteger(a)||a<0||a>=o.length)return null;
+    if(new Set(o.map(norm)).size!==o.length)return null;
+    return{t:'mcq',q:txt,o,a,w};
+  }
+  if(q.t==='fill'){
+    const a=(Array.isArray(q.a)?q.a:[q.a]).map(x=>String(x==null?'':x).trim()).filter(Boolean);
+    if(!a.length||txt.split('___').length!==2)return null;
+    return{t:'fill',q:txt,a,w,h:String(q.h||'')};
+  }
+  return null;
+}
+function sanitizeLesson(l){
+  const s=v=>safeHtml(String(v==null?'':v)),plain=v=>String(v==null?'':v);
+  const out={id:plain(l.id),lvl:'AI',t:plain(l.t)||'Your lesson',fr:plain(l.fr)||'AI-generated',sum:plain(l.sum),ai:true,created:+l.created||0,blocks:[],qs:[]};
+  (Array.isArray(l.blocks)?l.blocks:[]).slice(0,8).forEach(b=>{
+    if(!b||typeof b!=='object')return;
+    const nb={};
+    if(b.h)nb.h=s(b.h);if(b.p)nb.p=s(b.p);if(b.tip)nb.tip=s(b.tip);
+    if(b.tbl&&Array.isArray(b.tbl.head)&&Array.isArray(b.tbl.rows))nb.tbl={head:b.tbl.head.map(s),rows:b.tbl.rows.filter(Array.isArray).map(r=>r.map(s))};
+    if(Array.isArray(b.ex))nb.ex=b.ex.filter(e=>Array.isArray(e)&&e.length>=2).map(e=>[plain(e[0]),plain(e[1])]);
+    if(nb.h||nb.p||nb.tip||nb.tbl||(nb.ex&&nb.ex.length))out.blocks.push(nb);
+  });
+  out.qs=(Array.isArray(l.qs)?l.qs:[]).map(validQ).filter(Boolean);
+  return out;
+}
+let S=defaults();
+try{const r=localStorage.getItem(KEY);if(r)S=fix(JSON.parse(r));}catch(e){}
+function rebuild(){
+  CARDS.length=0;BASE_CARDS.forEach(c=>CARDS.push(c));
+  THEMES.length=0;BASE_THEMES.forEach(t=>THEMES.push(t));
+  LESSONS.length=0;BASE_LESSONS.forEach(l=>LESSONS.push(l));
+  Object.keys(CARD_BY_ID).forEach(k=>{delete CARD_BY_ID[k];});
+  Object.values(S.decks).filter(d=>d&&Array.isArray(d.cards)).sort((a,b)=>(a.created||0)-(b.created||0)).forEach(d=>{
+    THEMES.push({id:'u_'+d.id,vi:String(d.name||'Word list'),fr:'Your own list',custom:true,deck:d.id});
+    d.cards.forEach(c=>CARDS.push({id:String(c.id),theme:'u_'+d.id,fr:String(c.fr||''),vi:String(c.vi||''),ex:String(c.ex||''),exvi:String(c.exvi||''),note:String(c.note||''),aix:c.aix?1:0}));
+  });
+  Object.values(S.lessons).filter(l=>l&&typeof l==='object').sort((a,b)=>(a.created||0)-(b.created||0)).forEach(l=>LESSONS.push(sanitizeLesson(l)));
+  CARDS.forEach(c=>{CARD_BY_ID[c.id]=c;});
+}
+rebuild();
+function contentBytes(decks,lessons){return new TextEncoder().encode(JSON.stringify({decks,lessons})).length;}
+let dbState=null,dbContent=null,dbBusy=false,dirtyState=false,dirtyContent=false,contentOff=false,saveTimer=0,syncState='local';
+function stateOnly(){const o=Object.assign({},S);delete o.decks;delete o.lessons;return o;}
+function touch(content){
+  S.updatedAt=Date.now();if(content)S.contentAt=Date.now();
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+  dirtyState=true;if(content)dirtyContent=true;
+  clearTimeout(saveTimer);saveTimer=setTimeout(flushDb,1500);
+}
+const FATAL=['invalid_argument','not_granted','revoked','capability_disabled','capability_removed','transform_error','quota_exceeded'];
+async function flushDb(){
+  if(dbBusy||!(dirtyState||dirtyContent))return;
+  dbBusy=true;
+  if(dbState&&dirtyState){
+    dirtyState=false;
+    try{await dbState.set({blob:JSON.stringify(stateOnly()),updatedAt:S.updatedAt});syncState='cloud';}
+    catch(e){if(e&&FATAL.includes(e.code)){dbState=null;syncState='local';}else{dirtyState=true;syncState='retry';}}
+  }
+  if(dbContent&&dirtyContent&&!contentOff){
+    dirtyContent=false;
+    try{await dbContent.set({blob:JSON.stringify({decks:S.decks,lessons:S.lessons}),updatedAt:S.contentAt});}
+    catch(e){if(e&&FATAL.includes(e.code)){contentOff=true;toast('Too large to sync. Your data is still saved in this browser.');}else dirtyContent=true;}
+  }
+  dbBusy=false;
+  if((dirtyState&&dbState)||(dirtyContent&&dbContent&&!contentOff)){clearTimeout(saveTimer);saveTimer=setTimeout(flushDb,4000);}
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){clearTimeout(saveTimer);flushDb();}});
+async function initDb(){
+  try{
+    const c=window.claude;if(!c||!c.use)return;
+    const db=await c.use('db');if(!db)return;
+    const rs=db.doc('learn/state'),rc=db.doc('learn/content');
+    const both=await Promise.all([rs.get(),rc.get()]),ss=both[0],sc=both[1];
+    let sAt=0,cAt=0,changed=false;
+    if(sc.exists){
+      const d=sc.data()||{};cAt=d.updatedAt||0;
+      if(d.blob&&cAt>(S.contentAt||0)){try{const r=JSON.parse(d.blob);S.decks=(r&&r.decks)||{};S.lessons=(r&&r.lessons)||{};S.contentAt=cAt;changed=true;}catch(e){}}
+    }
+    if(ss.exists){
+      const d=ss.data()||{};sAt=d.updatedAt||0;
+      if(d.blob&&sAt>(S.updatedAt||0)){try{const r=JSON.parse(d.blob);S=fix(Object.assign({},r,{decks:S.decks,lessons:S.lessons,contentAt:S.contentAt}));changed=true;}catch(e){}}
+    }
+    if(changed){rebuild();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+    dbState=rs;dbContent=rc;syncState='cloud';
+    if((S.updatedAt||0)>sAt)dirtyState=true;
+    if((S.contentAt||0)>cAt)dirtyContent=true;
+    flushDb();
+    if(changed&&!session&&!lesson&&!sub.import&&!sub.ai)render();
+  }catch(e){}
+}
+
+/* ================= scheduler (simplified SM-2) ================= */
+const isSeen=c=>!!(c&&c.t>0);
+const isDue=c=>isSeen(c)&&c.due<=today();
+function statusOf(c){if(!isSeen(c))return 'new';return c.iv>=21?'mature':'learn';}
+function preview(c){
+  const ef=c?c.ef:2.5,reps=c?c.reps:0,iv=c?c.iv:0;
+  const hardN=reps===0?1:Math.max(iv+1,Math.round(iv*1.2));
+  let goodN=reps===0?1:reps===1?3:Math.round(iv*ef);goodN=Math.max(goodN,hardN+(reps>=2?1:0));
+  let easyN=reps===0?3:reps===1?6:Math.round(iv*ef*1.3);easyN=Math.max(easyN,goodN+2);
+  return {
+    1:{iv:0,ef:Math.max(1.3,ef-.2),reps:0},
+    2:{iv:hardN,ef:Math.max(1.3,ef-.15),reps:reps+1},
+    3:{iv:goodN,ef,reps:reps+1},
+    4:{iv:easyN,ef:ef+.15,reps:reps+1}
+  };
+}
+function fmtIv(n){if(n<=0)return 'Now';if(n===1)return '1 day';if(n<30)return n+' days';if(n<60)return '1 month';if(n<365)return Math.round(n/30)+' months';return (n/365).toFixed(1).replace('.0','')+' years';}
+function dayLog(){const k=dstr(today());return S.days[k]||(S.days[k]={rev:0,ok:0,neu:0,gr:0,grOk:0,dic:0,dicSum:0});}
+function applyGrade(id,q){
+  const t=today();let c=S.cards[id];const wasNew=!isSeen(c);
+  if(!c)c=S.cards[id]={ef:2.5,iv:0,reps:0,lapses:0,due:t,t:0,c:0};
+  const p=preview(c)[q];
+  if(q===1&&(c.reps>0||c.iv>0))c.lapses++;
+  c.ef=p.ef;c.iv=p.iv;c.reps=p.reps;c.due=t+p.iv;c.t++;if(q>=2)c.c++;
+  const d=dayLog();d.rev++;if(q>=2)d.ok++;
+  if(wasNew){d.neu++;if(S.newToday.d!==t)S.newToday={d:t,n:0};S.newToday.n++;}
+  return wasNew;
+}
+function ptsOf(X,k){const d=X.days[k];return d?(d.rev||0)+(d.gr||0)+(d.dic||0):0;}
+function streakOf(X){let n=0,t=today();if(!ptsOf(X,dstr(t)))t--;while(ptsOf(X,dstr(t))>0){n++;t--;}return n;}
+function counts(X,list){let n=0,l=0,m=0;(list||CARDS).forEach(c=>{const s=statusOf(X.cards[c.id]);if(s==='new')n++;else if(s==='learn')l++;else m++;});return{n,l,m};}
+
+/* ================= transient view state ================= */
+let view='today',sub={},session=null,lesson=null,dict=null,dashRange=14,demo=null,resetArm=false,modal=null;
+const NAV=[['today','Today','today'],['vocab','Vocabulary','cards'],['grammar','Grammar','book'],['listen','Dictation','ear'],['dash','Progress','chart']];
+
+function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;el.setAttribute('role','status');document.body.appendChild(el);setTimeout(()=>el.remove(),2200);}
+
+/* ================= TODAY ================= */
+function nextLesson(){return LESSONS.find(l=>!(S.grammar[l.id]&&S.grammar[l.id].best>=80))||null;}
+function vToday(){
+  const t=today(),dk=dstr(t),d=S.days[dk]||{rev:0,gr:0,dic:0};
+  const goal=S.settings.goal,done=d.rev+d.gr+d.dic,pct=Math.min(1,done/goal);
+  const due=CARDS.filter(c=>isDue(S.cards[c.id])).length;
+  const newLeft=Math.max(0,S.settings.newPerDay-(S.newToday.d===t?S.newToday.n:0));
+  const newAvail=Math.min(newLeft,CARDS.filter(c=>!isSeen(S.cards[c.id])).length);
+  const total=due+newAvail;
+  const R=44,C=2*Math.PI*R;
+  const fr=new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long',timeZone:'UTC'}).format(new Date(t*86400000));
+  const nl=nextLesson(),exs=CARDS.filter(c=>c.ex),sd=exs[(t*7)%exs.length];
+  let week='';for(let i=6;i>=0;i--){const n=t-i,p=ptsOf(S,dstr(n));const cls=p>=goal?'full':p>0?'half':'';week+=`<div><span class="dot ${cls}${i===0?' today':''}" title="${vd(n)}: ${p} reviews"></span>${DOWL[dow(n)]}</div>`;}
+  const cnt=counts(S);
+  return `
+  <section class="panel">
+    <div class="hero">
+      <div>
+        <h1>Bonjour !</h1>
+        <div class="date">${esc(fr)}</div>
+        <p class="muted" style="margin-top:10px;max-width:46ch">${due+newAvail>0?`<b>${due}</b> cards are due for review and <b>${newAvail}</b> new words are waiting.`:'Your reviews are done for today. Try a grammar lesson or some dictation.'}</p>
+        <div class="row" style="margin-top:14px">
+          <button class="btn primary big" data-act="review" ${total?'':'disabled'}>${ico('cards',20)} Start reviewing${total?` · ${total} cards`:''}</button>
+        </div>
+      </div>
+      <div class="ring" role="img" aria-label="${done} of ${goal} reviews done today">
+        <svg width="112" height="112" viewBox="0 0 112 112"><circle cx="56" cy="56" r="${R}" fill="none" stroke="var(--h0)" stroke-width="10"/><circle cx="56" cy="56" r="${R}" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" ${pct>0?'':'opacity="0" '}stroke-dasharray="${(C*pct).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 56 56)"/></svg>
+        <div class="n"><div><b>${done}</b><span>of ${goal}</span></div></div>
+      </div>
+    </div>
+  </section>
+  <div class="grid2">
+    <section class="panel">
+      <div class="ph"><h2>What to do next</h2></div>
+      <div class="todo">
+        <div class="todo-item">${ico('cards',22)}<div class="t"><b>Vocabulary</b><span class="small muted">${cnt.m} learned · ${cnt.l} in progress · ${cnt.n} not started</span></div><button class="btn sm" data-act="nav" data-v="vocab">Open</button></div>
+        <div class="todo-item">${ico('book',22)}<div class="t"><b>${nl?esc(nl.t):'All lessons complete'}</b><span class="small muted">${nl?`Grammar ${nl.lvl} · ${esc(nl.sum)}`:'Redo any lesson to keep it fresh'}</span></div><button class="btn sm" data-act="${nl?'open-lesson':'nav'}" ${nl?`data-id="${nl.id}"`:'data-v="grammar"'}>${nl?'Study':'Open'}</button></div>
+        <div class="todo-item">${ico('ear',22)}<div class="t"><b>Listen and write</b><span class="small muted">Train your ear and spelling with a French voice</span></div><button class="btn sm" data-act="nav" data-v="listen">Listen</button></div>
+      </div>
+    </section>
+    <div style="display:grid;gap:18px;align-content:start">
+      <section class="panel">
+        <div class="ph"><h2>Last 7 days</h2><span class="small muted">${streakOf(S)}-day streak</span></div>
+        <div class="week">${week}</div>
+      </section>
+      <section class="panel quote">
+        <div class="eyebrow">Sentence of the day</div>
+        <div class="fr">${esc(sd.ex)} ${spk(sd.ex,false,true)}</div>
+        <div class="muted">${esc(sd.exvi)}</div>
+      </section>
+    </div>
+  </div>`;
+}
+
+/* ================= VOCABULARY ================= */
+function themeCounts(X,id){return counts(X,CARDS.filter(c=>c.theme===id));}
+function mbar(k,total){const p=x=>(x/total*100).toFixed(2)+'%';return `<div class="mbar" role="img" aria-label="${k.m} learned, ${k.l} in progress, ${k.n} not started">${k.m?`<i class="m" style="width:${p(k.m)}"></i>`:''}${k.l?`<i class="l" style="width:${p(k.l)}"></i>`:''}${k.n?`<i class="n" style="width:${p(k.n)}"></i>`:''}</div>`;}
+const STL={new:['New',''],learn:['Learning','a1'],mature:['Learned','ok']};
+function wordRow(c){
+  const st=statusOf(S.cards[c.id]);
+  return `<div class="wl-row"><div><span class="fr">${esc(c.fr)}</span> ${spk(c.fr,false,true)}</div><div>${esc(c.vi)}</div><span class="chip ${STL[st][1]}">${STL[st][0]}</span>${c.ex?`<div class="ex">${esc(c.ex)} — ${esc(c.exvi)}${c.aix?' <span class="chip">AI</span>':''}</div>`:''}</div>`;
+}
+function vVocab(){
+  if(session)return vSession();
+  if(sub.import)return vImport();
+  if(sub.ai)return vAi();
+  if(sub.theme)return vTheme(sub.theme);
+  const t=today(),due=CARDS.filter(c=>isDue(S.cards[c.id])).length;
+  const newLeft=Math.max(0,S.settings.newPerDay-(S.newToday.d===t?S.newToday.n:0));
+  const newAvail=Math.min(newLeft,CARDS.filter(c=>!isSeen(S.cards[c.id])).length);
+  const k=counts(S);
+  const modes=[['mix','Mixed'],['fr2vi','French → English'],['vi2fr','English → French (typing)']];
+  return `
+  <section class="panel imp-cta">
+    <div><div class="eyebrow">Your own words</div>
+      <h2>Import a word list</h2>
+      <p>Copy a block of cells straight from Google Sheets, one word per row, and paste it in. Columns go <b>French | Meaning | Example | Example translation | Note</b> — only the first two are required. A .csv or .tsv file works too.</p></div>
+    <button class="btn primary" data-act="imp-open">Import words</button>
+  </section>
+  <section class="panel">
+    <div class="ph"><h2>Spaced repetition</h2><div class="seg" role="group" aria-label="Review style">${modes.map(m=>`<button data-act="mode" data-m="${m[0]}" aria-pressed="${S.settings.mode===m[0]}">${m[1]}</button>`).join('')}</div></div>
+    <div class="row" style="justify-content:space-between;gap:16px">
+      <div><b style="font-size:28px;letter-spacing:-.02em">${due+newAvail}</b> <span class="muted">cards today (${due} to review, ${newAvail} new)</span></div>
+      <button class="btn primary" data-act="review" ${due+newAvail?'':'disabled'}>Start reviewing</button>
+    </div>
+    <hr>
+    <div class="legend"><span><i style="background:var(--m-mature)"></i>Learned ${k.m}</span><span><i style="background:var(--m-learn)"></i>Learning ${k.l}</span><span><i style="background:var(--m-new)"></i>Not started ${k.n}</span></div>
+  </section>
+  <section class="panel">
+    <div class="field"><label for="q">Search your words</label><input id="q" type="search" placeholder="Type French or English, e.g. pain, bread" autocomplete="off" value="${esc(sub.q||'')}"></div>
+    <div id="qres" style="margin-top:12px">${qres(sub.q||'')}</div>
+  </section>
+  <section>
+    <div class="ph"><h2>Topics</h2><div class="row"><span class="small muted">${CARDS.length} words</span><button class="btn sm" data-act="imp-open">Import more</button></div></div>
+    <div class="themes">${THEMES.map(th=>{const c=themeCounts(S,th.id),n=c.n+c.l+c.m;return `<button class="theme" data-act="open-theme" data-id="${th.id}"><div><b>${esc(th.vi)}</b><div class="fr">${esc(th.fr)}</div></div>${mbar(c,n)}<div class="small muted">${c.m}/${n} learned</div></button>`;}).join('')}</div>
+  </section>`;
+}
+function qres(q){
+  q=norm(q);if(q.length<2)return '<div class="small muted">Type at least 2 characters to search.</div>';
+  const dq=deacc(q);
+  const r=CARDS.filter(c=>deacc(norm(c.fr)).includes(dq)||deacc(norm(c.vi)).includes(dq)).slice(0,12);
+  return r.length?`<div class="wl" style="border:1px solid var(--line);border-radius:8px;overflow:hidden">${r.map(wordRow).join('')}</div>`:'<div class="small muted">No matching word found.</div>';
+}
+function vTheme(id){
+  const th=THEMES.find(x=>x.id===id);
+  if(!th){sub={};return vVocab();}
+  const list=CARDS.filter(c=>c.theme===id),k=themeCounts(S,id);
+  const fresh=list.filter(c=>!isSeen(S.cards[c.id])).length,due=list.filter(c=>isDue(S.cards[c.id])).length;
+  const missing=th.custom?list.filter(c=>!c.ex).length:0;
+  const extra=`<div class="row" style="margin-top:14px">
+    ${aiOn()?`<button class="btn" data-act="ai-open" data-kind="vocab" data-theme="${id}">Generate exercises with AI</button>`:''}
+    ${th.custom?`${aiOn()&&missing?`<button class="btn" data-act="ai-fill" data-theme="${id}" ${sub.fillBusy?'disabled':''}>${sub.fillBusy?'Writing examples…':`Add example sentences with AI (${Math.min(missing,30)} words)`}</button>`:''}
+    <button class="btn" data-act="imp-open" data-deck="${th.deck}">Import more</button>
+    <button class="btn sm ghost" data-act="del-deck" data-id="${th.deck}" style="${delArm==='deck:'+th.deck?'border-color:var(--bad);color:var(--bad)':''}">${delArm==='deck:'+th.deck?'Click again to delete':'Delete this list'}</button>`:''}
+  </div>`;
+  return `
+  <div class="row"><button class="btn sm ghost" data-act="close-theme">${ico('back',16)} All topics</button></div>
+  <section class="panel">
+    <div class="ph"><div><div class="eyebrow">${esc(th.fr)}</div><h2 style="font-size:24px;margin-top:2px">${esc(th.vi)}</h2></div>
+    <button class="btn primary" data-act="review" data-theme="${id}" ${(due+fresh)?'':'disabled'}>Study this topic${due+fresh?` · ${Math.min(fresh,10)+due} cards`:''}</button></div>
+    ${mbar(k,list.length||1)}
+    <div class="small muted" style="margin-top:8px">${k.m} learned · ${k.l} in progress · ${k.n} not started</div>
+    ${extra}
+  </section>
+  <section class="panel flush"><div class="wl">${list.map(wordRow).join('')}</div></section>`;
+}
+
+/* ---- review session ---- */
+function startSession(themeId){
+  const t=today(),pool=CARDS.filter(c=>!themeId||c.theme===themeId);
+  const due=pool.filter(c=>isDue(S.cards[c.id])).sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due).map(c=>c.id);
+  const limit=themeId?10:Math.max(0,S.settings.newPerDay-(S.newToday.d===t?S.newToday.n:0));
+  const fresh=pool.filter(c=>!isSeen(S.cards[c.id])).slice(0,limit).map(c=>c.id);
+  const queue=due.concat(fresh);
+  if(!queue.length){toast('No cards are due right now.');return;}
+  session={queue,total:queue.length,done:0,ok:0,bad:0,newSet:{},cur:null,from:view};
+  view='vocab';sub={};nextCard();render();
+}
+function nextCard(){
+  const s=session;if(!s.queue.length){s.cur=null;return;}
+  const id=s.queue[0],c=S.cards[id],mode=S.settings.mode;
+  let kind='flip';
+  if(isSeen(c)){if(mode==='vi2fr')kind='type';else if(mode==='mix'&&c.reps>=2)kind='type';}
+  s.cur={id,kind,flipped:false,res:null,hint:false,val:''};
+}
+function checkTyped(card,val){
+  const a=norm(val),b=norm(card.fr);
+  if(a===b)return 'ok';
+  if(deacc(a)===deacc(b))return 'accent';
+  const sa=a.replace(ARTRE,''),sb=b.replace(ARTRE,'');
+  if(sb!==b&&deacc(sa)===deacc(sb))return sa===a?'noart':'wrongart';
+  return 'bad';
+}
+function doGrade(q){
+  const s=session;if(!s||!s.cur)return;
+  const id=s.cur.id,wasNew=applyGrade(id,q);
+  if(wasNew)s.newSet[id]=1;
+  s.queue.shift();
+  if(q===1){s.bad++;s.queue.splice(Math.min(3,s.queue.length),0,id);}
+  else{s.ok++;s.done++;}
+  touch();nextCard();render();
+}
+function vSession(){
+  const s=session;
+  if(!s.cur){
+    const n=s.ok+s.bad,acc=n?Math.round(s.ok/n*100):0,nn=Object.keys(s.newSet).length;
+    return `<section class="panel sess"><div class="sum"><div class="eyebrow">Session complete</div><div class="script" style="font-size:34px">Très bien !</div><div class="big">${acc}%</div><div class="muted">${s.total} cards · ${nn} new · ${s.bad} forgotten</div><div class="row"><button class="btn primary" data-act="end-session">Done</button></div></div></section>`;
+  }
+  const cur=s.cur,card=CARD_BY_ID[cur.id],c=S.cards[cur.id],pv=preview(c);
+  const st=statusOf(c),tag=st==='new'?'New word':st==='learn'?'Learning':'Review';
+  const kindLbl=cur.kind==='flip'?'French → English':'English → French';
+  const bar=`<div class="sess-top"><button class="btn sm ghost" data-act="end-session">${ico('x',16)} Exit</button><div class="prog" role="progressbar" aria-valuenow="${s.done}" aria-valuemax="${s.total}"><i style="width:${(s.done/s.total*100).toFixed(1)}%"></i></div><span class="small muted" style="font-variant-numeric:tabular-nums">${s.done}/${s.total}</span></div>`;
+  const tags=`<div class="fc-tags"><span class="chip a1">${kindLbl}</span><span class="chip">${tag}</span></div>`;
+  let body='',foot='';
+  const grades=(rec)=>`<div class="grades">${[[1,'Forgot'],[2,'Hard'],[3,'Good'],[4,'Easy']].map(g=>`<button class="grade q${g[0]}${rec===g[0]?' rec':''}" data-act="grade" data-q="${g[0]}">${g[1]}<small>${g[0]===1?'Again now':fmtIv(pv[g[0]].iv)}</small><span class="k">${g[0]}</span></button>`).join('')}</div>`;
+  const back=(withVi)=>`${withVi?`<div class="fc-vi">${esc(card.vi)}</div>`:''}${card.note?`<div class="fc-note">${esc(card.note)}</div>`:''}${card.ex?`<div class="fc-ex"><div class="f">${esc(card.ex)} ${spk(card.ex,false,true)}</div><div class="muted small">${esc(card.exvi)}</div></div>`:''}`;
+  if(cur.kind==='flip'){
+    body=`<div class="fc-word">${esc(card.fr)} ${spk(card.fr)}</div>${cur.flipped?back(true):''}`;
+    foot=cur.flipped?grades(3):`<button class="btn primary big" data-act="flip" style="width:100%">Show answer <kbd>Space</kbd></button>`;
+  }else{
+    const hint=cur.hint?`<div class="fc-note">Hint: starts with "<b>${esc(card.fr[0])}</b>", ${card.fr.replace(/[\s'-]/g,'').length} letters</div>`:`<button class="btn sm ghost" data-act="hint" style="justify-self:start">Show a hint</button>`;
+    if(!cur.res){
+      body=`<div class="fc-prompt">Write the French for:</div><div class="fc-vi">${esc(card.vi)}</div>${hint}
+      <div class="field"><input id="ans" type="text" lang="fr" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type your answer…" aria-label="French answer"></div>
+      <div class="chars" aria-label="Insert accented characters">${'éèêëàâçîïôùûœ'.split('').map(x=>`<button type="button" data-act="ch" data-c="${x}" aria-label="insert ${x}">${x}</button>`).join('')}</div>`;
+      foot=`<button class="btn primary big" data-act="submit" style="width:100%">Check <kbd>Enter</kbd></button>`;
+    }else{
+      const r=cur.res,vt={ok:['ok','Correct!'],accent:['near','Right letters, but the accents are off. It should be:'],noart:['near','Right word — remember the article. It should be:'],wrongart:['near','Wrong article. It should be:'],bad:['bad','Not quite. The answer is:']}[r];
+      const rec=r==='ok'?3:r==='bad'?1:2;
+      body=`<div class="fc-prompt">${esc(card.vi)}</div><div class="verdict ${vt[0]}">${ico(r==='ok'?'check':r==='bad'?'x':'alert',18)}<div>${vt[1]}${r==='ok'?'':` <span class="answer-line" style="display:block;color:var(--ink)">${esc(card.fr)} ${spk(card.fr,false,true)}</span>`}</div></div><div class="small muted">You wrote: <b>${esc(cur.val)||'(nothing)'}</b></div>${back(false)}`;
+      foot=grades(rec);
+    }
+  }
+  return `<div class="sess">${bar}<div class="fc">${tags}${body}</div>${foot}</div>`;
+}
+
+/* ================= GRAMMAR ================= */
+const lvlCls=l=>l.lvl==='A1'?'a1':l.lvl==='A2'?'a2':'';
+function lessonStatus(l){const g=S.grammar[l.id];if(!g)return['Not started',''];if(g.tries>0)return[g.best+'%',g.best>=80?'ok':'a2'];return['Read','a1'];}
+function vGrammar(){
+  if(sub.ai)return vAi();
+  if(lesson){if(lesson.phase==='read')return vLessonRead();if(lesson.phase==='quiz')return vQuiz();return vQuizDone();}
+  const groups=[['A1','Level A1'],['A2','Level A2'],['AI','Your lessons (AI-generated)']];
+  return `<section><div class="ph"><h2 style="font-size:22px">Grammar, step by step</h2>${aiOn()?`<button class="btn" data-act="ai-open" data-kind="grammar">Build a lesson from notes (AI)</button>`:''}</div><p class="small muted">${LESSONS.length} lessons · a short read, then exercises</p></section>`+
+  groups.map(g=>{const ls=LESSONS.filter(l=>l.lvl===g[0]);return ls.length?`<section class="lgroup"><div class="eyebrow">${g[1]}</div>${ls.map(l=>{const st=lessonStatus(l);return `<button class="lesson-card" data-act="open-lesson" data-id="${l.id}"><span class="chip ${lvlCls(l)}">${l.lvl}</span><div><b>${esc(l.t)}</b><div class="s">${esc(l.sum)}</div></div><span class="score chip ${st[1]}">${st[0]}</span></button>`;}).join('')}</section>`:'';}).join('');
+}
+function tblHtml(t){return `<div class="tbl"><table><thead><tr>${t.head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${t.rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' style="font-weight:600"':''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
+function blocksHtml(l){
+  return l.blocks.map(b=>`<div class="block">${b.h?`<h3>${b.h}</h3>`:''}${b.p?`<p>${b.p}</p>`:''}${b.tbl?tblHtml(b.tbl):''}${b.tip?`<div class="tip">${b.tip}</div>`:''}${b.ex?`<div class="ex-list">${b.ex.map(e=>`<div class="ex-item"><div class="t"><div class="f">${esc(e[0])}</div><div class="v">${esc(e[1])}</div></div>${spk(e[0],false,true)}</div>`).join('')}</div>`:''}</div>`).join('');
+}
+function vLessonRead(){
+  const l=LESSONS.find(x=>x.id===lesson.id);
+  if(!l){lesson=null;return vGrammar();}
+  const g=S.grammar[l.id],dk='lesson:'+l.id;
+  return `<article class="lesson">
+    <div class="row"><button class="btn sm ghost" data-act="close-lesson">${ico('back',16)} All lessons</button></div>
+    <header><div class="eyebrow">${l.ai?'AI-generated lesson':'Grammar '+l.lvl} · ${esc(l.fr)}</div><h1 style="margin-top:4px">${esc(l.t)}</h1></header>
+    ${l.ai?`<div class="tip">This lesson was written by AI and may contain mistakes. Check anything important against your course book or a dictionary.</div>`:''}
+    ${blocksHtml(l)}
+    <div class="panel row" style="justify-content:space-between"><div><b>Exercises · ${l.qs.length} questions</b><div class="small muted">${g&&g.tries?`Your best score: ${g.best}%`:'Try them to check what stuck'}</div></div><button class="btn primary" data-act="start-quiz">Start exercises</button></div>
+    ${l.ai?`<div class="row"><button class="btn sm ghost" data-act="del-lesson" data-id="${l.id}" style="${delArm===dk?'border-color:var(--bad);color:var(--bad)':''}">${delArm===dk?'Click again to delete':'Delete this lesson'}</button></div>`:''}
+  </article>`;
+}
+function startQuiz(qs,retry){
+  const l=LESSONS.find(x=>x.id===lesson.id);
+  lesson.phase='quiz';lesson.retry=!!retry;
+  lesson.qs=(qs||l.qs).map(q=>q.t==='mcq'?Object.assign({},q,{order:shuffle(q.o.map((_,i)=>i))}):q);
+  lesson.i=0;lesson.ans=null;lesson.score=0;lesson.wrong=[];
+  if(!retry){lesson.first=0;}
+  render();
+}
+function vQuiz(){
+  const l=LESSONS.find(x=>x.id===lesson.id),q=lesson.qs[lesson.i],a=lesson.ans;
+  const text=esc(q.q).replace('___','<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  let body='';
+  if(q.t==='mcq'){
+    body=`<div class="opts">${q.order.map((oi,k)=>{let cls='';if(a){if(oi===q.a)cls=' right';else if(a.pick===oi)cls=' wrong';}return `<button class="opt${cls}" data-act="pick" data-i="${oi}" ${a?'disabled':''}><span class="k">${k+1}</span>${esc(q.o[oi])}</button>`;}).join('')}</div>`;
+  }else{
+    body=`<div class="fillrow"><input id="ans" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" lang="fr" placeholder="Type your answer…" value="${a?esc(a.val):''}" ${a?'disabled':''} aria-label="Answer">${a?'':'<button class="btn primary" data-act="fill">Check</button>'}</div>${a?'':`<div class="small muted">Hint: ${esc(q.h||'')}</div><div class="chars">${'éèêëàâçîïôùûœ\''.split('').map(x=>`<button type="button" data-act="ch" data-c="${x}">${x}</button>`).join('')}</div>`}`;
+  }
+  let fb='';
+  if(a){fb=`<div class="verdict ${a.ok?'ok':'bad'}">${ico(a.ok?'check':'x',18)}<div>${a.ok?'Correct!':'Not quite.'} <span style="font-weight:500;color:var(--ink)">${q.w}</span>${a.tip?`<div style="font-weight:500;color:var(--ink);margin-top:4px">${a.tip}</div>`:''}${!a.ok&&q.t==='fill'?`<div style="font-weight:500;color:var(--ink);margin-top:4px">Answer: <b>${esc(q.a[0])}</b></div>`:''}</div></div><button class="btn primary" data-act="qnext" style="justify-self:start">${lesson.i+1<lesson.qs.length?'Next question':'See results'} <kbd>Enter</kbd></button>`;}
+  return `<div class="lesson">
+    <div class="sess-top"><button class="btn sm ghost" data-act="back-read">${ico('x',16)} Exit</button><div class="prog"><i style="width:${(lesson.i/lesson.qs.length*100).toFixed(1)}%"></i></div><span class="small muted">${lesson.i+1}/${lesson.qs.length}</span></div>
+    <section class="panel q"><div class="eyebrow">${esc(l.t)}${lesson.retry?' · retrying mistakes':''}</div><div class="q-text">${text}</div>${body}${fb}</section>
+  </div>`;
+}
+function answerQ(ok,val,tip,pick){
+  const q=lesson.qs[lesson.i];lesson.ans={ok,val,tip,pick};
+  if(ok)lesson.score++;else lesson.wrong.push(q);
+  const d=dayLog();d.gr++;if(ok)d.grOk++;touch();render();
+}
+function checkFill(q,val){
+  const v=norm(val).replace(/\s*-\s*/g,'-'),list=q.a.map(x=>norm(x).replace(/\s*-\s*/g,'-'));
+  if(list.includes(v))return{ok:true};
+  if(list.map(deacc).includes(deacc(v))&&v)return{ok:true,tip:`Watch the accents: it should be <b>${esc(q.a[0])}</b>.`};
+  return{ok:false};
+}
+function vQuizDone(){
+  const l=LESSONS.find(x=>x.id===lesson.id),n=lesson.qs.length,pct=Math.round(lesson.score/n*100);
+  const g=S.grammar[l.id]||{best:0,tries:0};
+  const msg=pct===100?'Perfect!':pct>=80?'Very good!':pct>=50?'Not bad — go over the ones you missed.':'Read the lesson again, then try once more.';
+  return `<div class="lesson"><section class="panel sum"><div class="eyebrow">${esc(l.t)}${lesson.retry?' · retry':''}</div><div class="big">${lesson.score}/${n}</div><div class="script" style="font-size:26px">${msg}</div><div class="muted">${lesson.retry?'':`Best score: ${g.best}%`}</div>
+  <div class="row" style="justify-content:center">${lesson.wrong.length?`<button class="btn primary" data-act="retry-wrong">Retry ${lesson.wrong.length} missed</button>`:''}<button class="btn" data-act="back-read">Back to the lesson</button><button class="btn" data-act="close-lesson">All lessons</button></div></section></div>`;
+}
+
+/* ================= DICTATION ================= */
+function dictNew(){
+  const d=dict,base=d.mode==='words'?CARDS:CARDS.filter(c=>c.ex),seen=base.filter(c=>isSeen(S.cards[c.id]));
+  const pool=(seen.length>=6?seen:base);
+  let c,tries=0;do{c=pick(pool);tries++;}while(d.item&&d.item.card.id===c.id&&tries<6);
+  d.item={card:c,text:d.mode==='words'?c.fr:c.ex,vi:d.mode==='words'?c.vi:c.exvi};d.res=null;
+}
+function tokens(s){return norm(s).replace(/[.,!?;:«»"()…—]/g,' ').split(/\s+/).filter(Boolean);}
+function diffTok(exp,got){
+  const A=exp.map(x=>deacc(x)),B=got.map(x=>deacc(x));
+  const n=A.length,m=B.length,L=Array.from({length:n+1},()=>new Array(m+1).fill(0));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)L[i][j]=A[i]===B[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+  const st=new Array(n).fill('miss'),used=new Array(m).fill(false);
+  let i=0,j=0;
+  while(i<n&&j<m){if(A[i]===B[j]){st[i]=exp[i]===got[j]?'ok':'accent';used[j]=true;i++;j++;}else if(L[i+1][j]>=L[i][j+1])i++;else j++;}
+  return{st,extras:got.filter((_,k)=>!used[k])};
+}
+function dictCheck(){
+  const d=dict,val=($('#ans')||{}).value||'';
+  const shown=d.item.text.replace(/\s*\/\s*/g,' ').split(/\s+/).filter(Boolean);
+  const expT=tokens(d.item.text),gotT=tokens(val);
+  const df=diffTok(expT,gotT);
+  const ok=df.st.filter(x=>x==='ok').length,ac=df.st.filter(x=>x==='accent').length;
+  const score=Math.max(0,Math.min(1,(ok+.5*ac-.5*df.extras.length)/Math.max(1,expT.length)));
+  d.res={val,expT,st:df.st,extras:df.extras,score};
+  const dl=dayLog();dl.dic++;dl.dicSum+=score;touch();render();
+}
+function vListen(){
+  if(!dict)dict={mode:'sentences',item:null,slow:false,res:null};
+  if(!dict.item)dictNew();
+  const d=dict,r=d.res;
+  const seen=CARDS.filter(c=>isSeen(S.cards[c.id])).length;
+  let res='';
+  if(r){
+    const pct=Math.round(r.score*100),cls=pct>=95?'ok':pct>=60?'near':'bad',msg=pct>=95?'Spot on!':pct>=60?'Close.':'Listen again and give it another go.';
+    res=`<div class="verdict ${cls}">${ico(pct>=95?'check':pct>=60?'alert':'x',18)}<div>${msg} Accuracy <b>${pct}%</b></div></div>
+    <div class="diff" aria-label="Word by word result">${r.expT.map((t,i)=>`<span class="${r.st[i]}">${esc(t)}</span>`).join('')}</div>
+    ${r.extras.length?`<div class="extras">Extra or wrong words: ${r.extras.map(e=>`<s>${esc(e)}</s>`).join(' ')}</div>`:''}
+    <div class="small muted"><span class="chip ok">green</span> correct · <span class="chip a2">amber</span> missing accent · <span class="chip bad">red</span> wrong or missing</div>
+    <div><b>Answer:</b> ${esc(d.item.text)}</div><div class="muted">${esc(d.item.vi)}</div>
+    <div class="row"><button class="btn primary" data-act="dict-next">Next <kbd>Enter</kbd></button></div>`;
+  }
+  const noTts=!TTS.ok?`<div class="tip">This browser has no speech synthesis, so dictation will not work here. Try Chrome, Edge or Safari.</div>`:'';
+  return `
+  <section class="panel q" style="max-width:720px;margin-inline:auto;width:100%">
+    <div class="ph"><h2>Listen and write</h2><div class="seg" role="group" aria-label="Mode"><button data-act="dict-mode" data-m="words" aria-pressed="${d.mode==='words'}">Words</button><button data-act="dict-mode" data-m="sentences" aria-pressed="${d.mode==='sentences'}">Sentences</button></div></div>
+    ${noTts}
+    <p class="muted small">Listen, then type exactly what you hear. ${seen>=6?'Drawn from the words you have studied.':'Drawn from the whole word list for now, and from your studied words as you go.'}</p>
+    <div class="dict-play"><button class="play" data-act="dict-play" aria-label="Play">${ico('play',30)}</button><button class="btn" data-act="dict-play" data-slow="1">${ico('turtle',18)} Play slowly</button></div>
+    ${r?'':`<div class="field"><label for="ans">What did you hear?</label><textarea id="ans" rows="2" lang="fr" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type in French…"></textarea></div>
+    <div class="chars">${'éèêëàâçîïôùûœ\''.split('').map(x=>`<button type="button" data-act="ch" data-c="${x}">${x}</button>`).join('')}</div>
+    <div class="row"><button class="btn primary" data-act="dict-check">Check <kbd>Enter</kbd></button><button class="btn ghost" data-act="dict-skip">Skip</button></div>`}
+    ${res}
+  </section>`;
+}
+
+/* ================= PROGRESS ================= */
+function niceMax(v){const s=[10,20,30,40,50,60,80,100,120,150,200,250,300,400,500,600,800,1000];return s.find(x=>x>=v)||Math.ceil(v/100)*100;}
+function topRound(x,y,w,h,r){r=Math.min(r,h,w/2);return `M${x} ${y+h}V${y+r}Q${x} ${y} ${x+r} ${y}H${x+w-r}Q${x+w} ${y} ${x+w} ${y+r}V${y+h}Z`;}
+function chartW(half){const mw=($('#main')||{}).clientWidth||700;let w=mw-38;if(half)w=(mw>=618?(mw-18)/2:mw)-38;return Math.max(280,Math.round(w));}
+function chartDaily(X,n){
+  const t=today(),rows=[];
+  for(let i=n-1;i>=0;i--){const d=X.days[dstr(t-i)]||{};rows.push({n:t-i,a:d.rev||0,b:d.gr||0,c:d.dic||0});}
+  const mx=niceMax(Math.max(X.settings.goal,...rows.map(r=>r.a+r.b+r.c)));
+  const W=chartW(false),H=220,L=34,R=6,T=12,B=26,pw=W-L-R,ph=H-T-B,bw=pw/n,w=Math.min(26,bw*.66),Y=v=>T+ph-(v/mx)*ph;
+  const step=n<=7?1:n<=14?2:5;
+  let g='';
+  [0,.5,1].forEach(f=>{const y=Y(mx*f);g+=`<line class="${f===0?'base':'grid'}" x1="${L}" x2="${W-R}" y1="${y}" y2="${y}"/><text x="${L-7}" y="${y+4}" text-anchor="end">${Math.round(mx*f)}</text>`;});
+  rows.forEach((r,i)=>{
+    const cx=L+bw*i+bw/2,x=cx-w/2,segs=[[r.a,'var(--s1)'],[r.b,'var(--s2)'],[r.c,'var(--s3)']].filter(s=>s[0]>0);
+    let acc=0;
+    segs.forEach((s,k)=>{const h=s[0]/mx*ph,y=Y(acc+s[0]);acc+=s[0];
+      g+=k===segs.length-1?`<path d="${topRound(x,y,w,h,4)}" fill="${s[1]}" stroke="var(--surface)" stroke-width="1.5"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${s[1]}" stroke="var(--surface)" stroke-width="1.5"/>`;});
+    if((n-1-i)%step===0)g+=`<text x="${cx}" y="${H-8}" text-anchor="middle">${vd(r.n)}</text>`;
+    g+=`<rect class="bar-hit" data-tip="${vd(r.n)}\nVocabulary: ${r.a}\nGrammar: ${r.b}\nDictation: ${r.c}\nTotal: ${r.a+r.b+r.c}" x="${L+bw*i}" y="${T}" width="${bw}" height="${ph}"/>`;
+  });
+  g+=`<line class="goal" x1="${L}" x2="${W-R}" y1="${Y(X.settings.goal)}" y2="${Y(X.settings.goal)}"/>`;
+  const tb=`<details class="tv"><summary>Show as a table</summary><div class="tbl"><table><thead><tr><th>Date</th><th>Vocabulary</th><th>Grammar</th><th>Dictation</th></tr></thead><tbody>${rows.slice().reverse().map(r=>`<tr><td>${vd(r.n)}</td><td>${r.a}</td><td>${r.b}</td><td>${r.c}</td></tr>`).join('')}</tbody></table></div></details>`;
+  return `<div class="chart"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Reviews per day over the last ${n} days">${g}</svg></div>${tb}`;
+}
+function chartForecast(X){
+  const t=today(),vals=[];
+  for(let k=0;k<7;k++)vals.push(CARDS.filter(c=>{const s=X.cards[c.id];if(!isSeen(s))return false;return k===0?s.due<=t:s.due===t+k;}).length);
+  const mx=niceMax(Math.max(...vals,5)),W=chartW(true),H=170,L=34,R=6,T=16,B=26,pw=W-L-R,ph=H-T-B,bw=pw/7,w=Math.min(34,bw*.6),Y=v=>T+ph-(v/mx)*ph;
+  let g='';
+  [0,.5,1].forEach(f=>{const y=Y(mx*f);g+=`<line class="${f===0?'base':'grid'}" x1="${L}" x2="${W-R}" y1="${y}" y2="${y}"/><text x="${L-7}" y="${y+4}" text-anchor="end">${Math.round(mx*f)}</text>`;});
+  vals.forEach((v,i)=>{const cx=L+bw*i+bw/2,x=cx-w/2,h=v/mx*ph;
+    if(v>0)g+=`<path d="${topRound(x,Y(v),w,h,4)}" fill="var(--s1)"/><text x="${cx}" y="${Y(v)-5}" text-anchor="middle" style="fill:var(--ink-2);font-weight:600">${v}</text>`;
+    g+=`<text x="${cx}" y="${H-8}" text-anchor="middle">${i===0?'Today':vd(t+i)}</text>`;
+    g+=`<rect class="bar-hit" data-tip="${i===0?'Today (includes overdue cards)':vd(t+i)}\n${v} cards due" x="${L+bw*i}" y="${T}" width="${bw}" height="${ph}"/>`;});
+  return `<div class="chart"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cards due over the next 7 days">${g}</svg></div>`;
+}
+function heatmap(X){
+  const t=today(),goal=X.settings.goal,todayDow=dow(t);
+  const startMon=t-todayDow-11*7;
+  let h='<div class="heat" role="img" aria-label="Activity over the last 12 weeks">';
+  const labs=['Mon','','Wed','','Fri','','Sun'];
+  for(let r=0;r<7;r++){
+    h+=`<span class="lab">${labs[r]}</span>`;
+    for(let c=0;c<12;c++){
+      const n=startMon+c*7+r;
+      if(n>t){h+='<span class="hc f"></span>';continue;}
+      const p=ptsOf(X,dstr(n)),lv=p===0?0:p<=goal*.25?1:p<=goal*.5?2:p<=goal?3:4;
+      h+=`<span class="hc l${lv}${n===t?' now':''}" data-tip="${vd(n)}\n${p} reviews"></span>`;
+    }
+  }
+  return h+'</div><div class="legend" style="margin-top:10px;align-items:center">Less <span class="row" style="gap:3px;flex-wrap:nowrap"><span class="hc" style="width:14px"></span><span class="hc l1" style="width:14px"></span><span class="hc l2" style="width:14px"></span><span class="hc l3" style="width:14px"></span><span class="hc l4" style="width:14px"></span></span> More</div>';
+}
+function makeDemo(){
+  const t=today(),D=fix({});D.settings=Object.assign({},S.settings);
+  let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  for(let i=0;i<84;i++){
+    if(i>8&&rnd()<.24)continue;
+    const a=Math.round(6+rnd()*18*(1-i/140)),b=rnd()<.55?Math.round(2+rnd()*7):0,c=rnd()<.4?Math.round(1+rnd()*4):0;
+    D.days[dstr(t-i)]={rev:a,ok:Math.round(a*(.72+rnd()*.2)),neu:rnd()<.5?Math.round(rnd()*8):0,gr:b,grOk:Math.round(b*.75),dic:c,dicSum:c*(.6+rnd()*.35)};
+  }
+  CARDS.forEach((c,i)=>{
+    if(i<44)D.cards[c.id]={ef:2.4,iv:22+(i%5)*11,reps:5,lapses:i%4?0:1,due:t+1+(i%20),t:8+i%6,c:7+i%5};
+    else if(i<88){const iv=1+(i%12);D.cards[c.id]={ef:2.3,iv,reps:2+(i%3),lapses:i%5?0:1,due:t+((i*3)%9)-(i%4===0?1:0),t:3+i%4,c:2+i%3};}
+  });
+  LESSONS.slice(0,7).forEach((l,i)=>{D.grammar[l.id]={best:[100,86,71,100,83,57,100][i],tries:1+i%3,last:t-i};});
+  return D;
+}
+function vDash(){
+  const X=demo||S,t=today();
+  const k=counts(X),seen=k.l+k.m;
+  const empty=!Object.keys(S.days).length&&!demo;
+  let rev7=0,ok7=0;for(let i=0;i<7;i++){const d=X.days[dstr(t-i)];if(d){rev7+=d.rev;ok7+=d.ok;}}
+  const acc=rev7?Math.round(ok7/rev7*100):null;
+  let dn=0,ds=0;Object.values(X.days).forEach(d=>{dn+=d.dic||0;ds+=d.dicSum||0;});
+  const banner=demo?`<div class="demo-banner"><span><b>Showing sample data.</b> These numbers are only an illustration — nothing is saved and your real progress is untouched.</span><button class="btn sm" data-act="demo-off">Back to my data</button></div>`
+   :empty?`<div class="demo-banner"><span>No study data yet. Review a few cards or work through a grammar lesson and these charts will fill up.</span><button class="btn sm" data-act="demo-on">Preview with sample data</button></div>`:'';
+  const themeRows=THEMES.map(th=>{const c=themeCounts(X,th.id),n=c.n+c.l+c.m;let tt=0,cc=0;CARDS.filter(x=>x.theme===th.id).forEach(x=>{const s=X.cards[x.id];if(s){tt+=s.t;cc+=s.c;}});
+    return `<div class="mrow"><div class="nm">${esc(th.vi)}<small>${c.m} learned · ${c.l} learning · ${c.n} new</small></div>${mbar(c,n)}<div class="pc" title="Recall rate">${tt?Math.round(cc/tt*100)+'%':'–'}</div></div>`;}).join('');
+  const gRows=LESSONS.map(l=>{const g=X.grammar[l.id],b=g?g.best:0;return `<div class="grow"><span>${esc(l.t)} <span class="chip ${lvlCls(l)}" style="margin-left:4px">${l.lvl}</span></span><div class="gbar" role="img" aria-label="${b}%"><i style="width:${b}%"></i></div><b style="text-align:right;font-variant-numeric:tabular-nums">${g&&g.tries?b+'%':'–'}</b></div>`;}).join('');
+  const st=streakOf(X);
+  return `${banner}
+  <section class="panel"><div class="figs">
+    <div class="fig"><b>${st}<small> days</small></b><span>Current streak</span></div>
+    <div class="fig"><b>${seen}<small> / ${CARDS.length}</small></b><span>Words seen</span></div>
+    <div class="fig"><b>${k.m}</b><span>Words learned (21+ day interval)</span></div>
+    <div class="fig"><b>${acc==null?'–':acc+'<small>%</small>'}</b><span>Recall rate, last 7 days</span></div>
+  </div></section>
+  <section class="panel">
+    <div class="ph"><h2>Reviews per day</h2><div class="seg" role="group" aria-label="Time range">${[7,14,30].map(n=>`<button data-act="range" data-n="${n}" aria-pressed="${dashRange===n}">${n} days</button>`).join('')}</div></div>
+    <div class="legend" style="margin-bottom:10px"><span><i style="background:var(--s1)"></i>Vocabulary</span><span><i style="background:var(--s2)"></i>Grammar</span><span><i style="background:var(--s3)"></i>Dictation</span><span><i style="background:none;border-top:2px dashed var(--ink-2);height:0;width:16px;border-radius:0;vertical-align:3px"></i>Goal: ${X.settings.goal}</span></div>
+    ${chartDaily(X,dashRange)}
+  </section>
+  <div class="grid2">
+    <section class="panel"><div class="ph"><h2>Activity</h2><span class="small muted">last 12 weeks</span></div>${heatmap(X)}</section>
+    <section class="panel"><div class="ph"><h2>Cards due in the next 7 days</h2></div>${chartForecast(X)}<p class="small muted" style="margin-top:6px">The "Today" column includes overdue cards.</p></section>
+  </div>
+  <section class="panel">
+    <div class="ph"><h2>Vocabulary by topic</h2><div class="legend"><span><i style="background:var(--m-mature)"></i>Learned</span><span><i style="background:var(--m-learn)"></i>Learning</span><span><i style="background:var(--m-new)"></i>New</span></div></div>
+    ${themeRows}<p class="small muted" style="margin-top:8px">The right-hand column is how often you recalled that topic correctly.</p>
+  </section>
+  <div class="grid2">
+    <section class="panel"><div class="ph"><h2>Grammar</h2><span class="small muted">best score per lesson</span></div>${gRows}</section>
+    <section class="panel"><div class="ph"><h2>Dictation</h2></div>
+      <div class="figs" style="grid-template-columns:1fr 1fr"><div class="fig"><b>${dn}</b><span>Attempts</span></div><div class="fig"><b>${dn?Math.round(ds/dn*100)+'<small>%</small>':'–'}</b><span>Average accuracy</span></div></div>
+    </section>
+  </div>`;
+}
+
+/* ================= IMPORT (Google Sheets, CSV, TSV) ================= */
+let imp=null,delArm='';
+const COLN=['French','Meaning','Example sentence','Example translation','Note'];
+const colLetter=j=>String.fromCharCode(65+(j%26));
+const newImp=deck=>({text:'',delim:'auto',header:true,headerSet:false,map:[0,1,2,3,4],mapSet:false,deck:deck||'new',name:''});
+function armDel(key){delArm=key;render();setTimeout(()=>{if(delArm===key){delArm='';if(!session&&!sub.import&&!sub.ai)render();}},4000);}
+function parseTable(text,delim){
+  text=String(text||'').replace(/^﻿/,'');
+  if(!text.trim())return [];
+  let d=delim==='tab'?'\t':delim==='comma'?',':delim==='semi'?';':delim==='pipe'?'|':null;
+  if(!d){
+    const lines=text.split(/\r?\n/).filter(l=>l.trim()).slice(0,20);
+    const first=lines[0]||'';
+    if(first.includes('\t'))d='\t';
+    else{
+      const score=c=>lines.reduce((n,l)=>n+(l.split(c).length-1),0);
+      const best=[['|',score('|')],[';',score(';')],[',',score(',')]].sort((a,b)=>b[1]-a[1])[0];
+      d=best[1]>0?best[0]:',';
+    }
+  }
+  const rows=[];let row=[],cell='',q=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(q){if(ch==='"'){if(text[i+1]==='"'){cell+='"';i++;}else q=false;}else cell+=ch;}
+    else if(ch==='"'&&cell==='')q=true;
+    else if(ch===d){row.push(cell);cell='';}
+    else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(cell);cell='';rows.push(row);row=[];}
+    else cell+=ch;
+  }
+  if(cell!==''||row.length){row.push(cell);rows.push(row);}
+  return rows.map(r=>r.map(c=>c.trim())).filter(r=>r.some(c=>c));
+}
+const HPAT=[/ph[aá]p|french|fran[cç]ais|^fr$|từ vựng|^từ$|^word$|^mot$|vocab/i,/nghĩa|nghia|vi[eệ]t|meaning|english|^en$|^vi$|^translation$|^gloss$/i,/^(ví dụ|vi du|example|exemple|sentence|câu)/i,/(dịch|dich|trans)/i,/ghi chú|ghi chu|note|comment/i];
+function looksHeader(r){return r.length>=2&&r[0].length<30&&r.some(c=>HPAT.some(p=>p.test(c)));}
+function autoMap(h,nc){
+  const used=new Set(),m=[-1,-1,-1,-1,-1];
+  for(let i=0;i<5;i++){const j=h.findIndex((c,jj)=>!used.has(jj)&&HPAT[i].test(c));if(j>=0){m[i]=j;used.add(j);}}
+  if(m[0]<0||m[1]<0)return [0,1,2,3,4].map(i=>i<nc?i:-1);
+  return m;
+}
+function buildImport(){
+  const rows=parseTable(imp.text,imp.delim);
+  if(!rows.length)return null;
+  const nc=Math.max.apply(null,rows.map(r=>r.length));
+  if(!imp.headerSet)imp.header=looksHeader(rows[0]);
+  const body=imp.header?rows.slice(1):rows;
+  if(!imp.mapSet)imp.map=imp.header?autoMap(rows[0],nc):[0,1,2,3,4].map(i=>i<nc?i:-1);
+  const g=(r,i)=>{const j=imp.map[i];return j>=0&&j<r.length?r[j].trim():'';};
+  const items=[],seen={};let skipped=0,dups=0;
+  body.forEach(r=>{
+    const fr=g(r,0).slice(0,80),vi=g(r,1).slice(0,160);
+    if(!fr||!vi){skipped++;return;}
+    const k=norm(fr);if(seen[k]){dups++;return;}seen[k]=1;
+    items.push({fr,vi,ex:g(r,2).slice(0,220),exvi:g(r,3).slice(0,220),note:g(r,4).slice(0,120)});
+  });
+  return{rows,nc,body,items,skipped,dups};
+}
+function impPreview(){
+  const b=buildImport();
+  if(!b)return '<p class="small muted">Nothing to preview yet. Paste a table from Google Sheets above, or pick a CSV/TSV file.</p>';
+  const opt=(j,sel)=>`<option value="${j}" ${sel===j?'selected':''}>${j<0?'— None —':'Column '+colLetter(j)+(imp.header&&b.rows[0][j]?': '+esc(b.rows[0][j].slice(0,22)):'')}</option>`;
+  const cols=[-1].concat(Array.from({length:b.nc},(_,j)=>j));
+  const maps=COLN.map((n,i)=>`<div class="field"><label for="imp-m${i}">${n}${i<2?' *':''}</label><select id="imp-m${i}" data-imp="map" data-i="${i}">${cols.map(j=>opt(j,imp.map[i])).join('')}</select></div>`).join('');
+  const decks=Object.values(S.decks).sort((a,c)=>a.created-c.created);
+  const deckSel=`<div class="field"><label for="imp-deck">Import into</label><select id="imp-deck" data-imp="deck"><option value="new">A new list</option>${decks.map(d=>`<option value="${d.id}" ${imp.deck===d.id?'selected':''}>Add to: ${esc(d.name)} (${d.cards.length} words)</option>`).join('')}</select></div>`;
+  const nameF=imp.deck==='new'||!S.decks[imp.deck]?`<div class="field"><label for="imp-name">List name</label><input id="imp-name" type="text" maxlength="60" placeholder="From Google Sheets" value="${esc(imp.name)}"></div>`:'';
+  const rowsHtml=b.items.slice(0,6).map(it=>`<tr><td>${esc(it.fr)}</td><td>${esc(it.vi)}</td><td>${esc(it.ex)}</td><td>${esc(it.exvi)}</td><td>${esc(it.note)}</td></tr>`).join('');
+  return `
+  <label class="row" style="gap:10px;cursor:pointer"><input type="checkbox" data-imp="header" ${imp.header?'checked':''} style="width:18px;height:18px"> The first row is a header</label>
+  <div class="imp-grid">${maps}</div>
+  ${b.nc<2
+    ?`<div class="tip">Everything arrived as a <b>single column</b>, so there is no second column to take the meaning from. In Google Sheets, keep the French word in one column and its meaning in the next one, select both columns, copy, and paste again. If your list keeps both on one line separated by a character such as <b>|</b>, choose that character under "Column separator" above.</div>`
+    :(imp.map[0]>=0&&imp.map[0]===imp.map[1])
+    ?`<div class="tip">French and Meaning both point at the same column, so every entry just repeats itself in the preview below. Pick a different column for the meaning.</div>`:''}
+  <div><div class="eyebrow" style="margin-bottom:6px">Preview (${Math.min(6,b.items.length)} of ${b.items.length} words)</div>
+    ${b.items.length?`<div class="tbl"><table><thead><tr>${COLN.map(n=>`<th>${n}</th>`).join('')}</tr></thead><tbody>${rowsHtml}</tbody></table></div>`:'<div class="tip">No row has both a French word and a meaning yet. Check which columns are mapped.</div>'}
+    <p class="small muted" style="margin-top:6px">${b.items.length} valid words${b.skipped?` · skipped ${b.skipped} rows missing the French or the meaning`:''}${b.dups?` · skipped ${b.dups} duplicate rows`:''}</p></div>
+  <div class="imp-grid">${deckSel}${nameF}</div>
+  <div class="row"><button class="btn primary" data-act="imp-go" ${b.items.length?'':'disabled'}>Import ${b.items.length} words</button><span class="small muted">Words already in the list are updated in place; your review progress is kept.</span></div>`;
+}
+function vImport(){
+  return `<div class="row"><button class="btn sm ghost" data-act="imp-close">${ico('back',16)} Back</button></div>
+  <section class="panel" style="display:grid;gap:14px">
+    <div><h2 style="font-size:20px">Import your own words</h2>
+    <p class="muted" style="margin-top:4px;max-width:68ch">In Google Sheets, select the cells (one word per row), press Ctrl/Cmd + C and paste them below. Put the columns in this order: <b>French | Meaning | Example sentence | Example translation | Note</b>. Only the first two are required, and a header row is detected automatically.</p></div>
+    <div class="field"><label for="imp-text">Paste your table here</label><textarea id="imp-text" rows="7" spellcheck="false" placeholder="le pain    bread    Je mange du pain.    I eat bread.">${esc(imp.text)}</textarea></div>
+    <div class="row" style="gap:16px">
+      <div class="field"><label for="imp-file">Or choose a file (in Sheets: File, Download, .csv or .tsv)</label><input id="imp-file" type="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"></div>
+      <div class="field"><label for="imp-delim">Column separator</label><select id="imp-delim" data-imp="delim">${[['auto','Detect'],['tab','Tab (pasted from Sheets)'],['comma','Comma (CSV)'],['semi','Semicolon'],['pipe','Vertical bar |']].map(o=>`<option value="${o[0]}" ${imp.delim===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>
+    </div>
+    <div id="imp-preview" style="display:grid;gap:14px">${impPreview()}</div>
+  </section>`;
+}
+function refreshImp(){const p=$('#imp-preview');if(p)p.innerHTML=impPreview();}
+function impGo(){
+  const b=buildImport();
+  if(!b||!b.items.length){toast('No valid words to import yet.');return;}
+  const decks=JSON.parse(JSON.stringify(S.decks));
+  let d;
+  if(imp.deck==='new'||!decks[imp.deck]){const id='d'+Date.now().toString(36);d=decks[id]={id,name:(imp.name||'').trim().slice(0,60)||'From Google Sheets',created:Date.now(),seq:0,cards:[]};}
+  else d=decks[imp.deck];
+  const idx={};d.cards.forEach(c=>{idx[norm(c.fr)]=c;});
+  let add=0,upd=0;
+  b.items.forEach(it=>{
+    const k=norm(it.fr),ex=idx[k];
+    if(ex){ex.vi=it.vi;if(it.ex){ex.ex=it.ex;ex.exvi=it.exvi;delete ex.aix;}if(it.note)ex.note=it.note;upd++;}
+    else{const c={id:'u'+d.id+'_'+(++d.seq),fr:it.fr,vi:it.vi,ex:it.ex,exvi:it.exvi,note:it.note};d.cards.push(c);idx[k]=c;add++;}
+  });
+  if(contentBytes(decks,S.lessons)>CONTENT_MAX){toast('That is too large (about 1,000 words with examples is the limit). Try splitting the table.');return;}
+  S.decks=decks;rebuild();touch(true);
+  imp=null;sub={theme:'u_'+d.id};render();window.scrollTo(0,0);
+  toast('Imported '+add+' new words'+(upd?', updated '+upd:''));
+}
+
+/* ================= AI: exercises, lessons, example sentences ================= */
+const AI={fn:null,ready:false};
+const AKEY='moncahier.key';
+const MODELS=[['claude-sonnet-5','Claude Sonnet 5 \u2014 balanced'],['claude-opus-5','Claude Opus 5 \u2014 most capable'],['claude-haiku-4-5-20251001','Claude Haiku 4.5 \u2014 fastest and cheapest']];
+function apiKey(){try{return (localStorage.getItem(AKEY)||'').trim();}catch(e){return '';}}
+function setApiKey(v){try{v&&v.trim()?localStorage.setItem(AKEY,v.trim()):localStorage.removeItem(AKEY);}catch(e){}}
+function aiOn(){return !!(AI.fn||apiKey());}
+async function initAI(){
+  try{const c=window.claude;if(c&&c.use)AI.fn=await c.use('sample');}catch(e){}
+  AI.ready=true;
+  if(AI.fn&&!session&&!lesson&&!sub.import&&!sub.ai)render();
+}
+function pickJson(text){
+  const t=String(text==null?'':text).trim(),tries=[t];
+  const f=t.match(/```(?:json)?\s*([\s\S]*?)```/i);if(f)tries.push(f[1].trim());
+  const ob=t.indexOf('{'),oe=t.lastIndexOf('}'),ab=t.indexOf('['),ae=t.lastIndexOf(']');
+  if(ab>=0&&ae>ab&&(ob<0||ab<ob))tries.push(t.slice(ab,ae+1));
+  if(ob>=0&&oe>ob)tries.push(t.slice(ob,oe+1));
+  for(let i=0;i<tries.length;i++){try{return JSON.parse(tries[i]);}catch(e){}}
+  throw{code:'invalid_json'};
+}
+async function apiJson(prompt,signal){
+  let res;
+  try{
+    res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',signal:signal||undefined,
+      headers:{'content-type':'application/json','x-api-key':apiKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:S.settings.model||'claude-sonnet-5',max_tokens:8000,messages:[{role:'user',content:prompt+'\n\nReply with only the JSON value and no commentary.'}]})
+    });
+  }catch(e){throw{code:(e&&e.name==='AbortError')?'cancelled':'network'};}
+  if(!res.ok)throw{code:res.status===401||res.status===403?'bad_key':res.status===429?'rate_limited':res.status>=500?'upstream_error':'api_error'};
+  const j=await res.json();
+  const txt=(j&&Array.isArray(j.content))?j.content.filter(b=>b&&b.type==='text').map(b=>b.text).join('\n'):'';
+  if(!txt.trim())throw{code:'empty'};
+  return pickJson(txt);
+}
+async function aiJson(prompt,signal){
+  if(AI.fn){const o={cache:false};if(signal)o.signal=signal;return AI.fn.json(prompt,o);}
+  if(apiKey())return apiJson(prompt,signal);
+  throw{code:'unavailable'};
+}
+function aiMsg(code){
+  return({
+    not_granted:'This page is not allowed to use Claude yet. Click again and choose Allow if you want to use it.',
+    sampling_disabled:'Claude is not enabled for this account or organisation.',
+    rate_limited:'Too many requests in a short time, or you have hit your usage limit. Try again later.',
+    invalid_json:'Claude did not answer in the expected format. Press Generate again.',
+    empty:'Nothing usable came back this time. Press Generate again or change the input.',
+    unavailable:'Add your Anthropic API key in Settings to use the AI helpers here.',
+    bad_key:'That API key was rejected. Check it in Settings — it should start with sk-ant-.',
+    network:'Could not reach the Anthropic API. Check your connection and try again.',
+    api_error:'The Anthropic API refused the request. Try a different model in Settings.',
+    session_expired:'Your session has expired. Reload the page and try again.'
+  })[code]||'That did not work just now. Please try again later.';
+}
+const QFORMAT=`Each element of "qs" is one of two shapes:
+- Multiple choice: {"t":"mcq","q":"the question (may contain ___ for a blank)","o":["option 1","option 2","option 3"],"a":<index of the correct option, starting at 0>,"w":"a short explanation in English"}
+- Fill in the blank: {"t":"fill","q":"a French sentence containing exactly one ___ with an English cue in brackets","a":["the correct answer","an alternative spelling that is also correct, if any"],"w":"a short explanation in English","h":"a short hint"}
+Rules: French spelling, accents, gender and conjugation must be perfectly correct; every question has exactly ONE correct answer; wrong options must be plausible but clearly wrong; inside "w" only the tags <b> and <i> are allowed.`;
+function promptVocab(a){
+  const list=CARDS.filter(c=>c.theme===a.themeId),src=list.length>40?shuffle(list).slice(0,40):list;
+  const kind=a.style==='mcq'?'multiple choice only':a.style==='fill'?'fill in the blank only':'about half multiple choice and half fill in the blank';
+  return `You are a French teacher working with an English-speaking learner at level A1–A2. Write ${a.n} practice questions for the vocabulary below (${kind}). Keep the sentences simple and A1–A2 appropriate; each question should focus on one word from the list.
+Reply with ONLY a JSON array of questions and no surrounding commentary.
+${QFORMAT}
+${a.note.trim()?'Extra request from the learner: '+a.note.trim().slice(0,300)+'\n':''}Vocabulary:
+${src.map(c=>'- '+c.fr+' = '+c.vi+(c.ex?' | example: '+c.ex:'')).join('\n')}`;
+}
+function promptGrammar(a){
+  return `You are a French teacher working with an English-speaking learner. Turn the grammar notes below into a short lesson at level ${a.lvl}, followed by ${a.n} practice questions.
+Base the explanation only on the notes; do not add rules that are not in them. Write your own examples and exercises using simple vocabulary. If anything in the notes looks wrong compared with standard French, say so plainly in a "tip".
+Reply with ONLY a JSON object of this shape:
+{"t":"a short title in English","fr":"the topic name in French","sum":"a one-line summary","blocks":[{"h":"section heading","p":"explanation in English","tbl":{"head":["..."],"rows":[["..."]]},"ex":[["French sentence","English translation"]],"tip":"a short note"}],"qs":[...]}
+Each block only needs the fields it actually uses (h, p, tbl, ex and tip are all optional); at most 5 blocks. Inside "h", "p", "tip" and the table cells only the tags <b> and <i> are allowed.
+${QFORMAT}
+The learner's notes (between the dashed lines):
+-----
+${a.notes.trim().slice(0,8000)}
+-----`;
+}
+function aiState(kind,themeId){return{kind,themeId,n:kind==='vocab'?8:10,style:'mix',note:'',notes:'',lvl:'A1',busy:false,err:'',items:null,keep:[],lesson:null,title:'',ctl:null};}
+async function aiRun(){
+  const a=sub.ai;if(!a||a.busy)return;
+  if(a.kind==='grammar'&&a.notes.trim().length<20){toast('Paste your notes first — a few lines at least.');return;}
+  a.busy=true;a.err='';a.items=null;a.lesson=null;render();
+  const ctl=new AbortController();a.ctl=ctl;
+  try{
+    const data=await aiJson(a.kind==='vocab'?promptVocab(a):promptGrammar(a),ctl.signal);
+    if(a.kind==='vocab'){
+      const arr=Array.isArray(data)?data:(data&&Array.isArray(data.qs)?data.qs:[]);
+      const raw=arr.filter(x=>validQ(x));
+      if(!raw.length)throw{code:'empty'};
+      a.raw=raw;a.items=raw.map(validQ);
+      if(!a.title){const th=THEMES.find(t=>t.id===a.themeId);a.title='Practice: '+(th?th.vi:'');}
+    }else{
+      const l=sanitizeLesson(Object.assign({},data&&typeof data==='object'?data:{},{id:'tmp'}));
+      if(!l.qs.length&&!l.blocks.length)throw{code:'empty'};
+      a.rawLesson=data;a.raw=(Array.isArray(data.qs)?data.qs:[]).filter(x=>validQ(x));
+      a.lesson=l;a.items=l.qs;a.title=l.t;
+    }
+    a.keep=a.items.map(()=>true);
+  }catch(e){if(!e||e.code!=='cancelled')a.err=(e&&e.code)||'upstream_error';}
+  a.busy=false;a.ctl=null;if(sub.ai===a)render();
+}
+function qPrev(q,i,keep){
+  const txt=esc(q.q).replace('___','<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  const ans=q.t==='mcq'?`<div class="opts-prev">${q.o.map((o,k)=>`<span class="${k===q.a?'ok':''}">${k===q.a?'✓ ':''}${esc(o)}</span>`).join('')}</div>`:`<div class="small">Answer: <b>${esc(q.a.join(' / '))}</b></div>`;
+  return `<label class="qp"><span class="row" style="gap:10px;align-items:flex-start;flex-wrap:nowrap"><input type="checkbox" data-act="ai-keep" data-i="${i}" ${keep?'checked':''} style="width:18px;height:18px;margin-top:3px;flex:none"><span style="font-weight:600">${txt}</span></span>${ans}<div class="small muted">${q.w||''}</div></label>`;
+}
+function vAi(){
+  const a=sub.ai,isV=a.kind==='vocab',th=isV?THEMES.find(t=>t.id===a.themeId):null;
+  const seg=(key,opts,cur)=>`<div class="seg" role="group">${opts.map(o=>`<button data-act="ai-set" data-k="${key}" data-v="${o[0]}" aria-pressed="${String(cur)===String(o[0])}">${o[1]}</button>`).join('')}</div>`;
+  const nSeg=isV?[6,8,12,16]:[6,10,12];
+  const cnt=isV?CARDS.filter(c=>c.theme===a.themeId).length:0;
+  const opts=isV
+   ?`<p class="muted small">Claude will build exercises from ${Math.min(cnt,40)} words in <b>${esc(th?th.vi:'')}</b>${cnt>40?' (40 picked at random)':''}.</p>
+     <div class="row" style="gap:18px"><div class="field"><label>Questions</label>${seg('n',nSeg.map(n=>[n,n]),a.n)}</div><div class="field"><label>Type</label>${seg('style',[['mix','Mixed'],['mcq','Multiple choice'],['fill','Fill the blank']],a.style)}</div></div>
+     <div class="field"><label for="ai-note">Anything else? (optional)</label><input id="ai-note" type="text" maxlength="300" data-ai="note" value="${esc(a.note)}" placeholder="e.g. focus on le/la, or use everyday situations"></div>`
+   :`<p class="muted small">Paste your own grammar notes — from Google Sheets, a course book or a class. Claude turns them into a short lesson with exercises, and you review it before saving.</p>
+     <div class="field"><label for="ai-notes">Grammar notes</label><textarea id="ai-notes" rows="8" data-ai="notes" spellcheck="false" placeholder="e.g. The passé composé uses avoir + past participle. -er verbs: parler → parlé…">${esc(a.notes)}</textarea></div>
+     <div class="row" style="gap:18px"><div class="field"><label>Level</label>${seg('lvl',[['A1','A1'],['A2','A2']],a.lvl)}</div><div class="field"><label>Questions</label>${seg('n',nSeg.map(n=>[n,n]),a.n)}</div></div>`;
+  let res='';
+  if(a.busy)res=`<div class="verdict near">${ico('alert',18)}<div>Claude is writing — this usually takes 20–60 seconds. The first time, you will be asked to allow it.</div></div>`;
+  else if(a.err)res=`<div class="verdict bad">${ico('x',18)}<div>${esc(aiMsg(a.err))}</div></div>`;
+  else if(a.items){
+    res=`<div class="tip">AI-generated content can contain mistakes. Untick anything that looks doubtful before you save.</div>
+    ${a.lesson&&a.lesson.blocks.length?`<div class="panel" style="display:grid;gap:14px"><div><div class="eyebrow">Lesson · ${esc(a.lesson.fr)}</div><h2 style="font-size:20px;margin-top:2px">${esc(a.lesson.t)}</h2></div>${blocksHtml(a.lesson)}</div>`:''}
+    <div class="eyebrow">${a.items.length} questions</div>
+    <div style="display:grid;gap:10px">${a.items.map((q,i)=>qPrev(q,i,a.keep[i])).join('')}</div>
+    <div class="field"><label for="ai-title">Lesson name</label><input id="ai-title" type="text" maxlength="80" data-ai="title" value="${esc(a.title)}"></div>
+    <div class="row"><button class="btn primary" data-act="ai-save">Save as my lesson</button></div>`;
+  }
+  return `<div class="row"><button class="btn sm ghost" data-act="ai-close">${ico('back',16)} Back</button></div>
+  <section class="panel" style="display:grid;gap:14px">
+    <div><div class="eyebrow">Generate with AI</div><h2 style="font-size:20px;margin-top:2px">${isV?'Vocabulary exercises':'A lesson from your notes'}</h2></div>
+    ${opts}
+    <div class="row">${a.busy?`<button class="btn" data-act="ai-stop">Stop</button>`:`<button class="btn primary" data-act="ai-go">${a.items||a.err?'Generate again':'Generate'}</button>`}</div>
+    ${res}
+  </section>`;
+}
+function aiSave(){
+  const a=sub.ai;if(!a||!a.items)return;
+  const qs=a.raw.filter((_,i)=>a.keep[i]);
+  if(!qs.length){toast('Keep at least one question.');return;}
+  const th=a.kind==='vocab'?THEMES.find(t=>t.id===a.themeId):null,id='ul_'+Date.now().toString(36);
+  const title=(a.title||'').trim().slice(0,80)||'My lesson';
+  const l=a.kind==='vocab'
+    ?{id,t:title,fr:'Exercices',sum:qs.length+' questions · '+(th?th.vi:''),blocks:[],qs,created:Date.now()}
+    :{id,t:title,fr:a.rawLesson.fr,sum:a.rawLesson.sum,blocks:Array.isArray(a.rawLesson.blocks)?a.rawLesson.blocks:[],qs,created:Date.now()};
+  const lessons=Object.assign({},S.lessons);lessons[id]=l;
+  if(contentBytes(S.decks,lessons)>CONTENT_MAX){toast('No room left for saved lessons. Delete an old one first.');return;}
+  S.lessons=lessons;rebuild();touch(true);
+  sub={};view='grammar';lesson={id,phase:'read'};render();window.scrollTo(0,0);toast('Saved to your Grammar lessons');
+}
+function promptFill(cards){
+  return `You are a French teacher working with an English-speaking learner at level A1–A2. For each word or phrase below, write exactly one short, simple, natural French example sentence that uses it correctly (conjugated or agreeing as needed), plus an English translation.
+Reply with ONLY a JSON array: [{"i":<the item number>,"ex":"the French sentence","exvi":"the English translation"}]. Spelling, accents and grammar must be correct.
+${cards.map((c,i)=>i+'. '+c.fr+' = '+c.vi).join('\n')}`;
+}
+async function aiFill(themeId){
+  const st=sub;if(st.fillBusy)return;
+  const th=THEMES.find(t=>t.id===themeId);if(!th||!th.deck)return;
+  const cards=CARDS.filter(c=>c.theme===themeId&&!c.ex).slice(0,30);
+  if(!cards.length){toast('Every word in this list already has an example.');return;}
+  st.fillBusy=true;render();
+  try{
+    const data=await aiJson(promptFill(cards));
+    const decks=JSON.parse(JSON.stringify(S.decks)),dd=decks[th.deck];let n=0;
+    (Array.isArray(data)?data:[]).forEach(r=>{
+      const c=r&&cards[+r.i];if(!c||typeof r.ex!=='string'||typeof r.exvi!=='string'||!r.ex.trim())return;
+      const t=dd&&dd.cards.find(x=>x.id===c.id);if(t){t.ex=r.ex.trim().slice(0,220);t.exvi=r.exvi.trim().slice(0,220);t.aix=1;n++;}
+    });
+    if(!n)throw{code:'empty'};
+    if(contentBytes(decks,S.lessons)>CONTENT_MAX)throw{code:'size'};
+    S.decks=decks;rebuild();touch(true);toast('Added examples for '+n+' words — please check them.');
+  }catch(e){toast(e&&e.code==='size'?'This list has reached its size limit.':aiMsg(e&&e.code));}
+  st.fillBusy=false;if(sub===st)render();
+}
+
+/* ================= SETTINGS ================= */
+function openSettings(){modal='settings';renderModal();}
+function renderModal(){
+  const m=$('#modal');
+  if(!modal){m.innerHTML='';return;}
+  const st=S.settings,sync=dbState?'Syncing across your devices through your account.':'Saved in this browser only. Export a backup from time to time.';
+  m.innerHTML=`<div class="veil" data-act="close-modal"><div class="modal" role="dialog" aria-modal="true" aria-label="Settings" data-stop="1">
+    <div class="row" style="justify-content:space-between"><h2>Settings</h2><button class="iconbtn" data-act="close-modal" aria-label="Close">${ico('x',18)}</button></div>
+    <div class="field"><label for="s-new">New words per day</label><select id="s-new" data-set="newPerDay">${[5,10,15,20,30].map(n=>`<option value="${n}" ${st.newPerDay===n?'selected':''}>${n} words</option>`).join('')}</select></div>
+    <div class="field"><label for="s-goal">Daily goal</label><select id="s-goal" data-set="goal">${[10,20,30,50,80].map(n=>`<option value="${n}" ${st.goal===n?'selected':''}>${n} reviews (a card, a question or a dictation each count as one)</option>`).join('')}</select></div>
+    <div class="field"><label for="s-mode">Review style</label><select id="s-mode" data-set="mode"><option value="mix" ${st.mode==='mix'?'selected':''}>Mixed: recognise first, then type it out</option><option value="fr2vi" ${st.mode==='fr2vi'?'selected':''}>French → English (flip the card)</option><option value="vi2fr" ${st.mode==='vi2fr'?'selected':''}>English → French (type it)</option></select></div>
+    <label class="row" style="gap:10px;cursor:pointer"><input type="checkbox" id="s-auto" data-set="auto" ${st.auto?'checked':''} style="width:18px;height:18px"> Read the word aloud when the answer appears${TTS.ok?'':' (not supported in this browser)'}</label>
+    <hr>
+    ${AI.fn?`<div><b>AI helpers</b><p class="small muted" style="margin-top:2px">Running on your Claude account through this page \u2014 nothing to set up.</p></div>`
+     :`<div><b>AI helpers</b><p class="small muted" style="margin-top:2px">Outside Claude these need your own Anthropic API key. It is kept in this browser only, never leaves it except to call Anthropic, and is not included in backups. Usage is billed to your key.</p></div>
+       <div class="field"><label for="s-key">Anthropic API key</label><input id="s-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-..." value="${esc(apiKey())}"></div>
+       <div class="field"><label for="s-model">Model</label><select id="s-model" data-set="model">${MODELS.map(m=>`<option value="${m[0]}" ${st.model===m[0]?'selected':''}>${m[1]}</option>`).join('')}</select></div>`}
+    <hr>
+    <div><b>Storage</b><p class="small muted" style="margin-top:2px">${sync}</p></div>
+    <div class="field"><label for="bk">Backup (JSON). Paste an older backup here to restore it.</label><textarea id="bk" spellcheck="false" placeholder="Press Export to create a backup…"></textarea></div>
+    <div class="row"><button class="btn" data-act="bk-export">Export</button><button class="btn" data-act="bk-save">Save to a file</button><button class="btn" data-act="bk-copy">Copy</button><button class="btn" data-act="bk-import">Restore</button></div>
+    <hr>
+    <div class="row" style="justify-content:space-between"><span class="small muted">Erase all progress and start over.</span><button class="btn sm" data-act="reset" style="${resetArm?'border-color:var(--bad);color:var(--bad)':''}">${resetArm?'Click again to confirm':'Reset progress'}</button></div>
+  </div></div>`;
+}
+
+/* ================= chrome & navigation ================= */
+function renderChrome(){
+  const st=streakOf(S);
+  $('#streak').innerHTML=`<span class="streak${st?'':' off'}" title="Days studied in a row">${ico('flame',16)}${st}</span>`;
+  $('#nav').innerHTML=NAV.map(n=>`<button data-act="nav" data-v="${n[0]}" ${view===n[0]?'aria-current="page"':''}>${ico(n[2],20)}<span>${n[1]}</span></button>`).join('');
+}
+function render(){
+  const V={today:vToday,vocab:vVocab,grammar:vGrammar,listen:vListen,dash:vDash};
+  $('#main').innerHTML=V[view]();
+  renderChrome();
+  const a=$('#ans');if(a&&!a.disabled&&!(view==='listen'&&false)){try{a.focus({preventScroll:true});}catch(e){}}
+}
+function go(v){session=null;lesson=null;sub={};imp=null;delArm='';view=v;if(v!=='dash')demo=null;render();window.scrollTo(0,0);}
+
+/* ================= events ================= */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  if(b.classList.contains('veil')&&e.target!==b)return;
+  const a=b.dataset.act;
+  switch(a){
+    case 'nav':go(b.dataset.v);break;
+    case 'speak':speak(b.dataset.t,!!b.dataset.slow);break;
+    case 'settings':openSettings();break;
+    case 'close-modal':modal=null;resetArm=false;renderModal();break;
+    case 'review':startSession(b.dataset.theme||null);break;
+    case 'mode':S.settings.mode=b.dataset.m;touch();render();break;
+    case 'open-theme':sub={theme:b.dataset.id};render();window.scrollTo(0,0);break;
+    case 'close-theme':sub={};render();break;
+    case 'flip':{const s=session;if(s&&s.cur&&!s.cur.flipped){s.cur.flipped=true;if(S.settings.auto)speak(CARD_BY_ID[s.cur.id].fr);render();}break;}
+    case 'hint':session.cur.hint=true;render();break;
+    case 'submit':submitTyped();break;
+    case 'grade':doGrade(+b.dataset.q);break;
+    case 'end-session':{const f=session&&session.from;session=null;view=f==='vocab'?'vocab':(f||'today');render();window.scrollTo(0,0);break;}
+    case 'ch':{const i=$('#ans');if(i&&!i.disabled){const p=i.selectionStart==null?i.value.length:i.selectionStart,q=i.selectionEnd==null?p:i.selectionEnd;i.value=i.value.slice(0,p)+b.dataset.c+i.value.slice(q);i.focus();const np=p+b.dataset.c.length;try{i.setSelectionRange(np,np);}catch(x){}}break;}
+    case 'open-lesson':{const l=LESSONS.find(x=>x.id===b.dataset.id);view='grammar';sub={};session=null;lesson={id:l.id,phase:'read'};if(!S.grammar[l.id]){S.grammar[l.id]={best:0,tries:0,last:today()};touch();}render();window.scrollTo(0,0);break;}
+    case 'close-lesson':lesson=null;render();window.scrollTo(0,0);break;
+    case 'back-read':lesson.phase='read';render();window.scrollTo(0,0);break;
+    case 'start-quiz':startQuiz();window.scrollTo(0,0);break;
+    case 'retry-wrong':startQuiz(lesson.wrong.map(q=>{const o=Object.assign({},q);delete o.order;return o;}),true);break;
+    case 'pick':if(!lesson.ans){const q=lesson.qs[lesson.i],i=+b.dataset.i;answerQ(i===q.a,q.o[i],'',i);}break;
+    case 'fill':fillSubmit();break;
+    case 'qnext':quizNext();break;
+    case 'dict-mode':dict.mode=b.dataset.m;dict.item=null;render();break;
+    case 'dict-play':speak(dict.item.text,!!b.dataset.slow);break;
+    case 'dict-check':dictCheck();break;
+    case 'dict-skip':case 'dict-next':dictNew();render();setTimeout(()=>speak(dict.item.text,false),50);break;
+    case 'range':dashRange=+b.dataset.n;render();break;
+    case 'demo-on':demo=makeDemo();render();break;
+    case 'demo-off':demo=null;render();break;
+    case 'bk-export':{const t=$('#bk');if(t){t.value=JSON.stringify(S);t.select();}break;}
+    case 'bk-copy':{const t=$('#bk');if(t){if(!t.value)t.value=JSON.stringify(S);t.select();let ok=false;try{ok=document.execCommand('copy');}catch(x){}if(!ok&&navigator.clipboard)navigator.clipboard.writeText(t.value).then(()=>toast('Copied'),()=>{});else toast(ok?'Copied':'Press Ctrl/Cmd + C');}break;}
+    case 'bk-save':saveFile();break;
+    case 'bk-import':{const t=$('#bk');try{const o=JSON.parse(t.value);if(!o||o.v!==1||!o.cards||!o.days)throw 0;S=fix(o);rebuild();touch(true);modal=null;renderModal();render();toast('Backup restored');}catch(x){toast('That backup is not valid');}break;}
+    case 'imp-open':imp=newImp(b.dataset.deck);sub={import:1,from:sub};render();window.scrollTo(0,0);break;
+    case 'imp-close':imp=null;sub=(sub&&sub.from)||{};render();break;
+    case 'imp-go':impGo();break;
+    case 'ai-open':{const k=b.dataset.kind;sub={ai:aiState(k,b.dataset.theme||null),from:sub};if(k==='grammar')view='grammar';render();window.scrollTo(0,0);break;}
+    case 'ai-close':{const st=sub&&sub.ai;if(st&&st.ctl)st.ctl.abort();sub=(sub&&sub.from)||{};render();break;}
+    case 'ai-set':{const st=sub.ai,k=b.dataset.k,v=b.dataset.v;st[k]=(k==='n')?+v:v;render();break;}
+    case 'ai-go':aiRun();break;
+    case 'ai-stop':if(sub.ai&&sub.ai.ctl)sub.ai.ctl.abort();break;
+    case 'ai-keep':if(sub.ai)sub.ai.keep[+b.dataset.i]=b.checked;break;
+    case 'ai-save':aiSave();break;
+    case 'ai-fill':aiFill(b.dataset.theme);break;
+    case 'del-deck':{const key='deck:'+b.dataset.id;if(delArm!==key){armDel(key);break;}
+      const id=b.dataset.id,d=S.decks[id];if(d){d.cards.forEach(c=>{delete S.cards[c.id];});delete S.decks[id];}
+      delArm='';rebuild();touch(true);sub={};render();window.scrollTo(0,0);toast('Word list deleted');break;}
+    case 'del-lesson':{const key='lesson:'+b.dataset.id;if(delArm!==key){armDel(key);break;}
+      delete S.lessons[b.dataset.id];delete S.grammar[b.dataset.id];delArm='';lesson=null;rebuild();touch(true);render();window.scrollTo(0,0);toast('Lesson deleted');break;}
+    case 'reset':if(!resetArm){resetArm=true;renderModal();setTimeout(()=>{if(resetArm){resetArm=false;renderModal();}},4000);}else{S=defaults();rebuild();touch(true);resetArm=false;modal=null;renderModal();session=null;lesson=null;dict=null;go('today');toast('Progress reset');}break;
+  }
+});
+async function saveFile(){
+  const name='mon-cahier-'+dstr(today())+'.json',data=JSON.stringify(S);
+  try{const dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;
+    if(dl){await dl.save({filename:name,data});toast('File saved');return;}
+  }catch(e){if(e&&e.code==='declined')return;}
+  try{
+    const b=new Blob([data],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u;a.download=name;a.style.display='none';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),2000);toast('File saved');
+  }catch(e){toast('Could not save the file — use Copy instead.');}
+}
+function submitTyped(){
+  const s=session;if(!s||!s.cur||s.cur.res)return;
+  const i=$('#ans'),val=i?i.value:'';
+  if(!val.trim()){toast('Type an answer first.');return;}
+  s.cur.val=val;s.cur.res=checkTyped(CARD_BY_ID[s.cur.id],val);
+  if(S.settings.auto)speak(CARD_BY_ID[s.cur.id].fr);
+  render();
+}
+function fillSubmit(){
+  const q=lesson.qs[lesson.i];if(lesson.ans)return;
+  const i=$('#ans'),val=i?i.value:'';
+  if(!val.trim()){toast('Type an answer first.');return;}
+  const r=checkFill(q,val);answerQ(r.ok,val,r.tip||'',null);
+}
+function quizNext(){
+  if(!lesson.ans)return;
+  if(lesson.i+1<lesson.qs.length){lesson.i++;lesson.ans=null;render();return;}
+  if(!lesson.retry){
+    const id=lesson.id,n=lesson.qs.length,pct=Math.round(lesson.score/n*100),g=S.grammar[id]||{best:0,tries:0};
+    S.grammar[id]={best:Math.max(g.best||0,pct),tries:(g.tries||0)+1,last:today()};touch();
+  }
+  lesson.phase='done';render();window.scrollTo(0,0);
+}
+document.addEventListener('keydown',e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  const tag=(e.target.tagName||'').toLowerCase(),typing=tag==='input'||tag==='textarea'||tag==='select';
+  if(e.key==='Escape'&&modal){modal=null;renderModal();return;}
+  if(modal)return;
+  if(view==='vocab'&&session&&session.cur){
+    const cur=session.cur;
+    if(typing&&tag==='input'&&e.key==='Enter'&&cur.kind==='type'&&!cur.res){e.preventDefault();submitTyped();return;}
+    if(typing)return;
+    if(cur.kind==='flip'&&!cur.flipped&&(e.key===' '||e.key==='Enter')){e.preventDefault();const b=$('[data-act="flip"]');if(b)b.click();return;}
+    const flipped=cur.flipped||cur.res;
+    if(flipped){
+      if(['1','2','3','4'].includes(e.key)){doGrade(+e.key);return;}
+      if(e.key===' '||e.key==='Enter'){e.preventDefault();const rec=cur.kind==='type'&&cur.res?(cur.res==='ok'?3:cur.res==='bad'?1:2):3;doGrade(rec);return;}
+    }
+    if(e.key==='s'||e.key==='S'){speak(CARD_BY_ID[cur.id].fr);}
+    return;
+  }
+  if(view==='grammar'&&lesson&&lesson.phase==='quiz'){
+    const q=lesson.qs[lesson.i];
+    if(typing&&tag==='input'&&e.key==='Enter'){e.preventDefault();if(lesson.ans)quizNext();else fillSubmit();return;}
+    if(typing)return;
+    if(q.t==='mcq'&&!lesson.ans&&['1','2','3','4'].includes(e.key)){const oi=q.order[+e.key-1];if(oi!=null)answerQ(oi===q.a,q.o[oi],'',oi);return;}
+    if(lesson.ans&&(e.key==='Enter'||e.key===' ')){e.preventDefault();quizNext();}
+    return;
+  }
+  if(view==='listen'&&dict){
+    if(tag==='textarea'&&e.key==='Enter'&&!e.shiftKey&&!dict.res){e.preventDefault();dictCheck();return;}
+    if(!typing&&dict.res&&e.key==='Enter'){e.preventDefault();dictNew();render();setTimeout(()=>speak(dict.item.text,false),50);}
+  }
+});
+let impT=0;
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.id==='q'){sub.q=t.value;const r=$('#qres');if(r)r.innerHTML=qres(sub.q);}
+  else if(t.id==='imp-text'&&imp){imp.text=t.value;imp.headerSet=false;imp.mapSet=false;clearTimeout(impT);impT=setTimeout(refreshImp,250);}
+  else if(t.id==='imp-name'&&imp){imp.name=t.value;}
+  else if(t.dataset&&t.dataset.ai&&sub.ai){sub.ai[t.dataset.ai]=t.value;}
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.id==='imp-file'&&imp){const f=t.files&&t.files[0];if(!f)return;if(f.size>2000000){toast('That file is too large (2 MB maximum).');return;}
+    f.text().then(x=>{imp.text=x;imp.headerSet=false;imp.mapSet=false;const ta=$('#imp-text');if(ta)ta.value=x;refreshImp();}).catch(()=>toast('Could not read that file.'));return;}
+  if(t.id==='s-key'){setApiKey(t.value);render();renderModal();return;}
+  if(t.dataset&&t.dataset.imp&&imp){const k=t.dataset.imp;
+    if(k==='map'){imp.map[+t.dataset.i]=+t.value;imp.mapSet=true;}
+    else if(k==='header'){imp.header=t.checked;imp.headerSet=true;imp.mapSet=false;}
+    else if(k==='deck'){imp.deck=t.value;}
+    else if(k==='delim'){imp.delim=t.value;imp.mapSet=false;}
+    refreshImp();return;}
+  const k=e.target.dataset&&e.target.dataset.set;if(!k)return;
+  const v=e.target.type==='checkbox'?e.target.checked:((k==='mode'||k==='model')?e.target.value:+e.target.value);
+  S.settings[k]=v;touch();
+  if(session&&k==='mode'){/* applies from the next card */}
+  render();
+});
+/* tooltip */
+const tipEl=()=>$('#tip');
+document.addEventListener('pointerover',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');const el=tipEl();if(!el)return;if(!t){el.classList.remove('on');return;}el.textContent=t.dataset.tip;el.classList.add('on');});
+document.addEventListener('pointermove',e=>{const el=tipEl();if(!el||!el.classList.contains('on'))return;const w=el.offsetWidth,h=el.offsetHeight;let x=e.clientX+12,y=e.clientY-h-10;if(x+w>innerWidth-8)x=e.clientX-w-12;if(y<8)y=e.clientY+16;el.style.left=x+'px';el.style.top=y+'px';});
+document.addEventListener('pointerout',e=>{if(e.target.closest&&e.target.closest('[data-tip]')&&!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('[data-tip]'))){const el=tipEl();if(el)el.classList.remove('on');}});
+
+let rz=0;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(view==='dash'&&!modal)render();},150);});
+/* ================= start ================= */
+render();
+initDb();
+initAI();
+})();
+
+</script>
+<script>
+if('serviceWorker' in navigator && window.isSecureContext){
+  addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}</script>
+</body>
+</html>
